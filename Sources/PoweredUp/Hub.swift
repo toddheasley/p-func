@@ -1,6 +1,6 @@
 import CoreBluetooth
 
-// LEGO Powered Up 88009 hub: https://www.lego.com/en-us/product/hub-88009
+// LEGO Powered Up 88009 Hub: https://www.lego.com/en-us/product/hub-88009
 public class Hub: Equatable, Identifiable {
     public typealias State = CBPeripheralState
     
