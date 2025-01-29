@@ -1,57 +1,69 @@
 import Combine
 import CoreBluetooth
 
-@Observable public class PoweredUp: NSObject, CBCentralManagerDelegate {
+@Observable public class PoweredUp: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     public typealias State = CBManagerState
     
-    public let timeout: TimeInterval
     public private(set) var state: State = .unknown
     public private(set) var isScanning: Bool = false
     public private(set) var hubs: [Hub] = []
     
-    public func connect() {
+    public func connect(_ timeout: TimeInterval = 30.0) {
         for hub in hubs {
             guard hub.state == .disconnected else { continue }
             manager.connect(hub.peripheral) // Reconnect known hub
         }
-        scan()
+        scan(timeout)
+    }
+    
+    public func disconnect(_ hubs: [Hub]) {
+        for hub in hubs {
+            manager.cancelPeripheralConnection(hub.peripheral)
+            self.hubs.removeAll(where: { $0 == hub })
+        }
     }
     
     public func disconnect() {
         stopScanning()
-        for hub in hubs {
-            manager.cancelPeripheralConnection(hub.peripheral)
-        }
+        disconnect(hubs)
     }
     
-    public init(timeout: TimeInterval = 30.0) {
-        self.timeout = timeout
-        
+    public func stopScanning() {
+        timer.scan?.cancel()
+        manager.stopScan()
+    }
+    
+    public init(refreshRSSI every: TimeInterval = 5.0) {
         super.init()
         
         subscriber.state = manager.publisher(for: \.state).sink { self.state = $0 }
         subscriber.isScanning = manager.publisher(for: \.isScanning).sink { self.isScanning = $0 }
+        
+        // Refresh hubs signal quality
+        timer.refreshRSSI = Timer.publish(every: every, on: .main, in: .common)
+            .autoconnect()
+            .sink { _ in
+                for hub in self.hubs {
+                    hub.refreshRSSI()
+                }
+            }
         manager.delegate = self
     }
     
     private let manager: CBCentralManager = CBCentralManager()
-    private var subscriber: (state: AnyCancellable?, isScanning: AnyCancellable?, timer: AnyCancellable?)
+    private var subscriber: (state: AnyCancellable?, isScanning: AnyCancellable?)
+    private var timer: (scan: AnyCancellable?, refreshRSSI: AnyCancellable?)
     
-    private func scan() {
-        guard !manager.isScanning else { return }
+    private func scan(_ timeout: TimeInterval) {
+        stopScanning()
         manager.scanForPeripherals(withServices: [
-            CBUUID(string: "00001623-1212-EFDE-1623-785FEABCD123") // Service specific to LEGO hubs: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
+            .service
         ])
-        subscriber.timer = Timer.publish(every: timeout, on: .main, in: .common)
+        timer.scan = Timer.publish(every: timeout, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
                 self.stopScanning()
             }
-    }
-    
-    private func stopScanning() {
-        subscriber.timer?.cancel()
-        manager.stopScan()
     }
     
     // MARK: CBCentralManagerDelegate
@@ -62,9 +74,45 @@ import CoreBluetooth
         manager.connect(hub.peripheral) // Connect new hub
     }
     
-    public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {}
-    public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: (any Error)?) {}
+    public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        peripheral.delegate = self
+        peripheral.discoverServices([
+            .service
+        ])
+    }
+    
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {}
+    
+    // MARK: CBPeripheralDelegate
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: (any Error)?) {
+        guard let service: CBService = peripheral.service else {
+            manager.cancelPeripheralConnection(peripheral)
+            return
+        } // Hub profile includes one service
+        peripheral.discoverCharacteristics([
+            .characteristic
+        ], for: service)
+    }
+    
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: (any Error)?) {
+        guard let characteristic: CBCharacteristic = service.characteristic else {
+            manager.cancelPeripheralConnection(peripheral)
+            return
+        }
+        peripheral.setNotifyValue(true, for: characteristic)
+    }
+    
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: (any Error)?) {
+        print("didUpdateValueFor: \(characteristic)")
+    }
+    
+    public func peripheral(_ peripheral: CBPeripheral, didReadRSSI rssi: NSNumber, error: (any Error)?) {
+        for hub in hubs {
+            guard peripheral == hub.peripheral else { continue }
+            hub.rssi = RSSI(rssi)
+            break
+        }
+    }
 }
 
 extension PoweredUp.State: @retroactive CustomStringConvertible {
@@ -80,4 +128,11 @@ extension PoweredUp.State: @retroactive CustomStringConvertible {
     
     // CustomStringConvertible
     public var description: String { "Bluetooth \(status)"}
+}
+
+extension CBUUID {
+    
+    // Specific to LEGO hubs: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
+    static var characteristic: Self { Self(string: "00001624-1212-EFDE-1623-785FEABCD123") }
+    static var service: Self { Self(string: "00001623-1212-EFDE-1623-785FEABCD123") }
 }

@@ -6,7 +6,7 @@ public struct RSSI: CustomStringConvertible, ExpressibleByIntegerLiteral, RawRep
         case good, fair, poor, none
         
         public init(_ value: Int) {
-            if value > -45 {
+            if value > -50 {
                 self = .good
             } else if value > -75 {
                 self = .fair
