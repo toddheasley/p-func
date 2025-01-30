@@ -1,7 +1,7 @@
 import Combine
 import CoreBluetooth
 
-@Observable public class PoweredUp: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+@Observable  public class PoweredUp: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     public typealias State = CBManagerState
     
     public private(set) var state: State = .unknown

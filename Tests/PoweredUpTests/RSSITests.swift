@@ -1,5 +1,5 @@
-import Testing
 @testable import PoweredUp
+import Testing
 
 struct RSSITests {
     @Test func quality() {
