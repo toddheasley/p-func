@@ -5,5 +5,7 @@
 [![LEGO® Powered Up 88009 Hub](docs/powered-up-88009-hub.png)](https://www.lego.com/en-us/product/hub-88009)
 
 [![LEGO® Powered Up 88006 Move Hub](docs/powered-up-88006-move-hub.png)](https://www.lego.com/en-us/product/move-hub-88006)
+
+[![LEGO® Powered Up 88012 Technic™ Hub](docs/powered-up-88012-technic-hub.png)](https://www.lego.com/en-us/product/technic-hub-88012)
  
 [LEGO® Wireless Protocol 3.0.00 documentation](https://lego.github.io/lego-ble-wireless-protocol-docs)

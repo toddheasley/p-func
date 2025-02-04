@@ -5,8 +5,8 @@ import CoreBluetooth
     public typealias State = CBManagerState
     
     public private(set) var state: State = .unknown
-    public private(set) var isScanning: Bool = false
     public private(set) var hubs: [Hub] = []
+    public private(set) var isScanning: Bool = false
     
     public func connect(_ timeout: TimeInterval = 30.0) {
         for hub in hubs {
