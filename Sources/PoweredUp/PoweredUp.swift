@@ -8,12 +8,23 @@ import CoreBluetooth
     public private(set) var hubs: [Hub] = []
     public private(set) var isScanning: Bool = false
     
-    public func connect(_ timeout: TimeInterval = 30.0) {
-        for hub in hubs {
-            guard hub.state == .disconnected else { continue }
-            manager.connect(hub.peripheral) // Reconnect known hub
+    public func connect(_ timeout: TimeInterval = 15.0) {
+        switch state {
+        case .poweredOn:
+            for hub in hubs {
+                guard hub.state == .disconnected else { continue }
+                manager.connect(hub.peripheral) // Reconnect known hub
+            }
+            scan(timeout)
+        default:
+            state = .unknown // Turn off
+            timer.state = Timer.publish(every: 0.01, on: .main, in: .common)
+                .autoconnect()
+                .sink { _ in
+                    self.timer.state?.cancel()
+                    self.state = self.manager.state // Turn back on
+                }
         }
-        scan(timeout)
     }
     
     public func disconnect(_ hubs: [Hub]) {
@@ -52,7 +63,7 @@ import CoreBluetooth
     
     private let manager: CBCentralManager = CBCentralManager()
     private var subscriber: (state: AnyCancellable?, isScanning: AnyCancellable?)
-    private var timer: (scan: AnyCancellable?, refreshRSSI: AnyCancellable?)
+    private var timer: (scan: AnyCancellable?, refreshRSSI: AnyCancellable?, state: AnyCancellable?)
     
     private func scan(_ timeout: TimeInterval) {
         stopScanning()
@@ -64,6 +75,10 @@ import CoreBluetooth
             .sink { _ in
                 self.stopScanning()
             }
+    }
+    
+    private func hub(_ peripheral: CBPeripheral) -> Hub? {
+        hubs.filter { peripheral == $0.peripheral }.first
     }
     
     // MARK: CBCentralManagerDelegate
@@ -103,15 +118,11 @@ import CoreBluetooth
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: (any Error)?) {
-        print("didUpdateValueFor: \(characteristic)")
+        hub(peripheral)?.handle(value: characteristic.value)
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didReadRSSI rssi: NSNumber, error: (any Error)?) {
-        for hub in hubs {
-            guard peripheral == hub.peripheral else { continue }
-            hub.rssi = RSSI(rssi)
-            break
-        }
+        hub(peripheral)?.rssi = RSSI(rssi)
     }
 }
 
@@ -122,7 +133,8 @@ extension PoweredUp.State: @retroactive CustomStringConvertible {
         case .poweredOff: "powered off"
         case .resetting: "resetting…"
         case .unauthorized: "not authorized"
-        default: "not supported"
+        case .unsupported: "not supported"
+        default: "not available"
         }
     }
     

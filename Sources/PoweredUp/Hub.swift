@@ -1,19 +1,37 @@
 import CoreBluetooth
 
-// LEGO Powered Up 88009 Hub: https://www.lego.com/en-us/product/hub-88009
 public class Hub: Equatable, Identifiable {
     public typealias State = CBPeripheralState
     
-    public var state: State { peripheral.state }
-    public var identifier: UUID { peripheral.identifier }
+    public let system: System
+    public internal(set) var ports: [UInt8: IOPort] = [:]
     public internal(set) var rssi: RSSI
+    public var identifier: UUID { peripheral.identifier }
+    public var state: State { peripheral.state }
     
     let peripheral: CBPeripheral
     let advertisementData: AdvertisementData
     
-    func refreshRSSI() {
-        guard state == .connected else { return }
-        peripheral.readRSSI()
+    func handle(value data: Data?) {
+        guard let data else { return }
+        let value: [UInt8] = Array(data)
+        switch Response(value[2]) {
+        case .hubProperties:
+            break
+        case .hubAlerts:
+            break
+        case .hubAttached:
+            switch AttachedIO(value) {
+            case .attached(let id, let device):
+                ports[id] = IOPort(id, device: device)
+            case .detached(let id):
+                ports[id] = IOPort(id)
+            default:
+                break
+            }
+        default:
+            break
+        }
     }
     
     func write(value data: Data) {
@@ -21,8 +39,14 @@ public class Hub: Equatable, Identifiable {
         peripheral.writeValue(data, for: characteristic, type: .withResponse) // Write with response:  https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
     }
     
+    func refreshRSSI() {
+        guard state == .connected else { return }
+        peripheral.readRSSI()
+    }
+    
     init?(peripheral: CBPeripheral, advertisementData: AdvertisementData, rssi: RSSI) {
-        guard peripheral.name == "HUB NO.4" else { return nil }
+        guard let system: System = advertisementData.system else { return nil } // Only connect to supported models
+        self.system = system
         self.peripheral = peripheral
         self.advertisementData = advertisementData
         self.rssi = rssi

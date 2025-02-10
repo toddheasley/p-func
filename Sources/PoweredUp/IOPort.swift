@@ -1,9 +1,24 @@
-public enum IOPort: String, Sendable, CaseIterable, CustomStringConvertible {
-    case a, b, c, d, n
+public struct IOPort: CustomStringConvertible, Identifiable {
+    public let device: Device?
     
-    // MARK: CaseIterable
-    public static let allCases: [Self] = [.a, .b]
+    public var name: String? {
+        switch id {
+        case 0x00: "A"
+        case 0x01: "B"
+        case 0x02: "C"
+        case 0x03: "D"
+        default: nil
+        }
+    }
+    
+    init(_ id: UInt8, device: Device? = nil) {
+        self.device = device
+        self.id = id
+    }
     
     // MARK: CustomStringConvertible
-    public var description: String { rawValue.uppercased() }
+    public var description: String { (name ?? "").isEmpty ? "\(id)" : "\(name!) (\(id))" }
+    
+    // MARK: Identifiable
+    public let id: UInt8
 }
