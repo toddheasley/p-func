@@ -1,5 +1,6 @@
 public struct IOPort: CustomStringConvertible, Identifiable {
     public let device: Device?
+    public internal(set) var modeInformation: [UInt8: ModeInformation] = [:]
     
     public var name: String? {
         switch id {

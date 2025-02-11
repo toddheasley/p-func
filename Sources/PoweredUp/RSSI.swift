@@ -23,7 +23,7 @@ public struct RSSI: CustomStringConvertible, ExpressibleByIntegerLiteral, RawRep
     
     public var quality: Quality { Quality(rawValue) }
     
-    public init(_ value: NSNumber) {
+    init(_ value: NSNumber) {
         self.init(rawValue: value.intValue)
     }
     

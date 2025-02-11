@@ -5,7 +5,6 @@ public enum Request {
     
     case hubProperties(_ property: Property)
     case hubAlerts(_ alert: Alert, operation: Alert.Operation)
-    case hubAttachedIO
-    case portModeInformation
+    case portModeInformation(_ id: UInt8, mode: ModeInformation)
     case portOutputCommand
 }
