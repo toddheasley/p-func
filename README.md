@@ -1,6 +1,6 @@
 # `PoweredUp`
 
-Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and control attached lights, motors and sensors from a friendly `@Observable` Swift/SwiftUI interface.
+__Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and control attached lights, motors and sensors from a friendly `@Observable` Swift/SwiftUI interface.__
 
 [![LEGO® Powered Up 88010 Remote Control](docs/remote-control-88010.png)](https://www.lego.com/product/remote-control-88010)
 
