@@ -10,9 +10,9 @@ __Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and c
 
 | Hubs | Attachments |
 | --- | --- |
-| [88012&nbsp;Technic™&nbsp;Hub ![LEGO® Powered Up 88012 Technic™ Hub](docs/technic-hub-88012.png)](https://www.lego.com/product/technic-hub-88012) | [![LEGO® Powered Up 88013 Technic™ Large Motor](docs/technic-large-motor-88013.png) 88013&nbsp;Technic™&nbsp;Large&nbsp;Motor](https://www.lego.com/product/technic-large-motor-88013) |
-| [![LEGO® Powered Up 88009 Hub](docs/hub-88009.png)  88009&nbsp;Hub](https://www.lego.com/product/hub-88009) | [![LEGO® Powered Up 88011 Train Motor](docs/train-motor-88011.png) 88011&nbsp;Train&nbsp;Motor](https://www.lego.com/product/train-motor-88011) |
-| &nbsp; | [![LEGO® Powered Up 88005 Light](docs/light-88005.png) 88005&nbsp;Light](https://www.lego.com/product/light-88005) |
+| [88012&nbsp;Technic™&nbsp;Hub ![](docs/technic-hub-88012.png)](https://www.lego.com/product/technic-hub-88012) | [88013&nbsp;Technic™&nbsp;Large&nbsp;Motor ![](docs/technic-large-motor-88013.png)](https://www.lego.com/product/technic-large-motor-88013) |
+| [88009&nbsp;Hub ![](docs/hub-88009.png)](https://www.lego.com/product/hub-88009) | [88011&nbsp;Train&nbsp;Motor ![](docs/train-motor-88011.png)](https://www.lego.com/product/train-motor-88011) |
+| &nbsp; | [88005&nbsp;Light ![LEGO® Powered Up 88005 Light](docs/light-88005.png)](https://www.lego.com/product/light-88005) |
 
 ### Supported Platforms
 
