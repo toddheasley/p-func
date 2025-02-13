@@ -15,7 +15,7 @@ public class Hub: Equatable, Identifiable {
     func handle(value data: Data?) {
         guard let data else { return }
         let value: [UInt8] = Array(data)
-        switch Response(value[2]) {
+        switch Response(value) {
         case .hubProperties:
             break
         case .hubAlerts:

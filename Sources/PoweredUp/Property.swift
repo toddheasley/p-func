@@ -24,20 +24,20 @@ public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable
         case wirelessProtocolVersion(_ version: UInt16)
     }
     
-    public enum Request {
+    public enum Request: Encoding {
         case requestUpdate(_ property: Property)
         case notifyBatteryVoltage(_ notify: Bool)
         case notifyAdvertisingName(_ notify: Bool)
         case setAdvertisingName(_ name: String)
         case resetAdvertisingName
         
-        // MARK: Request.Encoding
-        public func encoded() -> [UInt8] {
+        // MARK: Encoding
+        public func value() -> [UInt8] {
             switch self {
             case .requestUpdate(let property): [property.id, Operation.requestUpdate.id]
             case .notifyBatteryVoltage(let notify): [Property.batteryVoltage.id, Operation.toggleUpdates(notify).id]
             case .notifyAdvertisingName(let notify): [Property.advertisingName.id, Operation.toggleUpdates(notify).id]
-            case .setAdvertisingName(let name): [Property.advertisingName.id, Operation.set.id] + name.encoded()
+            case .setAdvertisingName(let name): [Property.advertisingName.id, Operation.set.id] + name.value()
             case .resetAdvertisingName: [Property.advertisingName.id, Operation.reset.id]
             }
         }
@@ -46,18 +46,6 @@ public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable
     case advertisingName = 0x01
     case batteryVoltage = 0x06
     case wirelessProtocolVersion = 0x0A
-    
-    func decode(_ value: [UInt8]) -> Payload? {
-        switch self {
-        case .advertisingName:
-            guard let name: String = String(bytes: value, encoding: .ascii) else { return nil }
-            return .advertisingName(name)
-        case .batteryVoltage:
-            return .batteryVoltage(min(max(Int(value[0]), 0), 100))
-        case .wirelessProtocolVersion:
-            return .wirelessProtocolVersion(UInt16(value[1]) << 8 | UInt16(value[0]))
-        }
-    }
     
     // MARK: CustomStringConvertible
     public var description: String {
@@ -72,10 +60,10 @@ public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable
     public var id: UInt8 { rawValue }
 }
 
-extension String: Request.Encoding {
+extension String: Encoding {
     
-    // MARK: Request.Encoding
-    public func encoded() -> [UInt8] {
+    // MARK: Encoding
+    public func value() -> [UInt8] {
         utf8.prefix(14).map { UInt8($0) } // MAX_NAME_SIZE: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-payload
     }
 }

@@ -8,7 +8,7 @@ public enum Device: UInt16, CaseIterable, CustomStringConvertible, Identifiable 
     case voltage = 0x0014
     case current = 0x0015
     case rgbLight = 0x0017
-    // case visionSensor = 0x0025
+    case visionSensor = 0x0025
     case linearMotor = 0x002E
     
     public var url: URL? {
@@ -29,7 +29,7 @@ public enum Device: UInt16, CaseIterable, CustomStringConvertible, Identifiable 
         case .voltage: "voltage"
         case .current: "current"
         case .rgbLight: "RGB light"
-        // case .visionSensor: "color & distance sensor (88007)"
+        case .visionSensor: "color & distance sensor (88007)"
         case .linearMotor: "Technic large motor (88013)"
         }
     }
@@ -43,7 +43,7 @@ public enum Device: UInt16, CaseIterable, CustomStringConvertible, Identifiable 
         case .voltage: "voltage"
         case .current: "current"
         case .rgbLight: "rgb-light"
-        // case .visionSensor: "color-distance-sensor-88007"
+        case .visionSensor: "color-distance-sensor-88007"
         case .linearMotor: "technic-large-motor-88013"
         }
     }

@@ -1,5 +1,13 @@
 
-public enum ModeInformation: UInt8, CaseIterable, Identifiable {
+public enum ModeInformation: UInt8, CaseIterable, Decoding, Identifiable {
+    public enum Request: Encoding {
+        
+        // MARK: Encoding
+        public func value() -> [UInt8] {
+            []
+        }
+    }
+    
     case name = 0x00
     case raw = 0x01
     case pct = 0x02
@@ -8,9 +16,9 @@ public enum ModeInformation: UInt8, CaseIterable, Identifiable {
     case mapping = 0x05
     case valueFormat = 0x80
     
-    init?(_ value: UInt8?) {
-        guard let value else { return nil }
-        self.init(rawValue: value)
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        self.init(rawValue: value?[4] ?? 0x06)
     }
     
     // MARK: Identifiable
