@@ -6,11 +6,18 @@ public enum Response: UInt8, CaseIterable, Decoding {
     case hubProperties = 0x01
     case hubAlerts = 0x03
     case hubAttached = 0x04
+    case genericError = 0x05
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
-        self.init(rawValue: value?[2] ?? 0x00)
+        self.init(rawValue: value?[0] ?? 0x00)
     }
 }
 
 public typealias Decoding = Response.Decoding
+
+extension Array {
+    func offset(_ offset: Int) -> Self? {
+        count > offset ? Array(self[offset...]) : nil
+    }
+}

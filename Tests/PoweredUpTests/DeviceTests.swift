@@ -11,9 +11,13 @@ struct DeviceTests {
     }
     
     @Test func valueInit() {
-        #expect(Device(0x0002) == .trainMotor)
-        #expect(Device(0x002E) == .linearMotor)
-        #expect(Device(0x0044) == nil)
+        #expect(Device([0x02, 0x00]) == .trainMotor)
+        #expect(Device([0x2e, 0x00]) == .linearMotor)
+        #expect(Device([]) == nil)
+        
+        #expect(Device(rawValue: 0x0002) == .trainMotor)
+        #expect(Device(rawValue: 0x002E) == .linearMotor)
+        #expect(Device(rawValue: 0x0044) == nil)
     }
     
     // MARK: CustomStringConvertible

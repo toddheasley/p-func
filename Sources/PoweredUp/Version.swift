@@ -1,5 +1,7 @@
 
-// Version numbers: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#version-number-encoding
+// Version numbers
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#version-number-encoding
+
 public struct Version: Decoding, CustomStringConvertible {
     public let major: Int
     public let minor: Int
@@ -11,8 +13,8 @@ public struct Version: Decoding, CustomStringConvertible {
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
         guard let value, value.count == 4 else { return nil }
-        major = Int(value[3] >> 4) & 0x07
-        minor = Int(value[3]) & 0x0F
+        major = Int(value[3]) & 0x0F
+        minor = Int(value[3] >> 4) & 0x07
         patch = Int(value[2])
         build = (Int(value[1]) << 8) | Int(value[0])
         self.value = value

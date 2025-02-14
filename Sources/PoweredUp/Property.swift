@@ -1,7 +1,9 @@
 import Foundation
 
-// Hub properties: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-properties
-public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
+// Hub properties
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-properties
+
+public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
     public enum Operation: UInt8, CaseIterable, Identifiable {
         case set = 0x01
         case enableUpdates = 0x02
@@ -18,10 +20,27 @@ public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable
         public var id: UInt8 { rawValue }
     }
     
-    public enum Payload {
+    public enum Payload: Decoding {
         case advertisingName(_ name: String)
         case batteryVoltage(_ percent: Int)
-        case wirelessProtocolVersion(_ version: UInt16)
+        case wirelessProtocolVersion(_ version: Version)
+        
+        // MARK: Decoding
+        public init?(_ value: [UInt8]?) {
+            switch Property(value) {
+            case .advertisingName:
+                guard let name: String = String(value?.offset(2)) else { return nil }
+                self = .advertisingName(name)
+            case .batteryVoltage:
+                guard let percent: Int = Int(value?.offset(2)) else { return nil }
+                self = .batteryVoltage(percent)
+            case .wirelessProtocolVersion:
+                guard let version: Version = Version(value) else { return nil }
+                self = .wirelessProtocolVersion(version)
+            default:
+                return nil
+            }
+        }
     }
     
     public enum Request: Encoding {
@@ -47,6 +66,11 @@ public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable
     case batteryVoltage = 0x06
     case wirelessProtocolVersion = 0x0A
     
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        self.init(rawValue: value?[0] ?? 0x00)
+    }
+    
     // MARK: CustomStringConvertible
     public var description: String {
         switch self {
@@ -60,16 +84,28 @@ public enum Property: UInt8, CaseIterable, CustomStringConvertible, Identifiable
     public var id: UInt8 { rawValue }
 }
 
-extension String: Encoding {
+extension String: Decoding, Encoding {
+    
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        guard let value else { return nil }
+        self.init(bytes: value , encoding: .ascii)
+    }
     
     // MARK: Encoding
     public func value() -> [UInt8] {
-        utf8.prefix(14).map { UInt8($0) } // MAX_NAME_SIZE: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-payload
+        utf8.prefix(.maxNameSize).map { UInt8($0) }
     }
 }
 
-private extension Int {
-    init(_ value: UInt8) {
-        self = Data(bytes: [value], count: 1).reduce(0) { $0 << 8 | Int($1) }
+extension Int: Decoding {
+    
+    // MAX_NAME_SIZE: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-payload
+    static let maxNameSize: Int = 14
+    
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        guard let value, value.count == 1 else { return nil }
+        self = Data(bytes: value, count: 1).reduce(0) { $0 << 8 | Int($1) }
     }
 }

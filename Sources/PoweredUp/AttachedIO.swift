@@ -1,5 +1,7 @@
 
-// Hub attached I/O: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-attached-i-o
+// Hub attached I/O
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-attached-i-o
+
 public enum AttachedIO: Decoding {
     public enum Event: UInt8, CaseIterable, Decoding, Identifiable {
         case detached = 0x00
@@ -8,7 +10,7 @@ public enum AttachedIO: Decoding {
         
         // MARK: Decoding
         public init?(_ value: [UInt8]?) {
-            self.init(rawValue: value?[4] ?? 0x03)
+            self.init(rawValue: value?[0] ?? 0x03)
         }
         
         // MARK: Identifiable
@@ -21,13 +23,12 @@ public enum AttachedIO: Decoding {
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
-        switch Event(value) {
+        guard let value else { return nil }
+        switch Event(value.offset(1)) {
         case .attached:
-            guard let value, value.count > 6 else { return nil }
-            self = .attached(value[3], device: Device((UInt16(value[6]) << 8) | UInt16(value[5])))
+            self = .attached(value[0], device: Device(value.offset(2)))
         case .detached:
-            guard let value, value.count > 2 else { return nil }
-            self = .detached(value[3])
+            self = .detached(value[0])
         default: // Virtual/combined not implemented
             return nil
         }

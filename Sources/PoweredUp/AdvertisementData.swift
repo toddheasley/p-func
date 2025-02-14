@@ -1,6 +1,8 @@
 import CoreBluetooth
 
-// Advertising: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#document-2-Advertising
+// Advertising
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#advertising
+
 struct AdvertisementData {
     let serviceUUIDs: [CBUUID]
     let manufacturerData: [UInt8]?
@@ -14,7 +16,7 @@ struct AdvertisementData {
         } else {
             manufacturerData = nil
         }
-        system = System(manufacturerData?[3])
+        system = System(manufacturerData?.offset(3))
         isConnectable = dictionary?[CBAdvertisementDataIsConnectable] as? Bool
     }
 }

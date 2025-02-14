@@ -15,28 +15,46 @@ public class Hub: Equatable, Identifiable {
     func handle(value data: Data?) {
         guard let data else { return }
         let value: [UInt8] = Array(data)
-        switch Response(value) {
+        switch Response(value.offset(2)) {
         case .hubProperties:
-            break
-        case .hubAlerts:
-            break
-        case .hubAttached:
-            switch AttachedIO(value) {
-            case .attached(let id, let device):
-                ports[id] = IOPort(id, device: device)
-            case .detached(let id):
-                ports[id] = IOPort(id)
+            switch Property.Payload(value.offset(3)) {
+            case .advertisingName(let name):
+                print("name: \(name)")
+            case .batteryVoltage(let percent):
+                print("percent: \(percent)")
+            case .wirelessProtocolVersion(let version):
+                print("version \(version)")
             default:
                 break
             }
+        case .hubAlerts:
+            guard let alert: Alert = Alert(value.offset(3)) else { break }
+            print("alert: \(alert)")
+        case .hubAttached:
+            switch AttachedIO(value.offset(3)) {
+            case .attached(let id, let device):
+                ports[id] = IOPort(id, device: device)
+                print("attached: \(id) \(device?.description ?? "nil")")
+            case .detached(let id):
+                ports[id] = IOPort(id)
+                print("detached: \(id)")
+            default:
+                break
+            }
+        case .genericError:
+            guard let genericError: GenericError = GenericError(value.offset(3)) else { break }
+            print("error: \(genericError)")
         default:
             break
         }
     }
     
-    func write(value data: Data) {
-        guard let characteristic: CBCharacteristic = peripheral.characteristic else { return }
-        peripheral.writeValue(data, for: characteristic, type: .withResponse) // Write with response:  https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
+    func write(_ value: [UInt8]?) {
+        guard let characteristic: CBCharacteristic = peripheral.characteristic,
+              let value else {
+            return
+        }
+        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse) // Write with response:  https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
     }
     
     func refreshRSSI() {

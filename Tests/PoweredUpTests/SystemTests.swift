@@ -8,9 +8,9 @@ struct SystemTests {
     }
     
     @Test func valueInit() {
-        #expect(System(0b10000000) == .technicHub)
-        #expect(System(0b01000001) == .twoPortHub)
-        #expect(System(0b01000000) == nil)
+        #expect(System([0b10000000]) == .technicHub)
+        #expect(System([0b01000001]) == .twoPortHub)
+        #expect(System([0b01000000]) == nil)
     }
     
     // MARK: CustomStringConvertible
