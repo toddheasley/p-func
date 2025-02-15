@@ -54,7 +54,7 @@ public class Hub: Equatable, Identifiable {
               let value else {
             return
         }
-        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse) // Write with response:  https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
+        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse)
     }
     
     func refreshRSSI() {

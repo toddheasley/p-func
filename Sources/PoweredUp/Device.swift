@@ -13,9 +13,7 @@ public enum Device: UInt16, CaseIterable, Decoding, CustomStringConvertible, Ide
     case visionSensor = 0x0025
     case linearMotor = 0x002E
     
-    public var url: URL? {
-        id.filter("0123456789".contains).count > 4 ? URL(string: "https://www.lego.com/product/\(id)") : nil
-    }
+    public var url: URL? { id.filter("0123456789".contains).count > 4 ? URL(string: "https://www.lego.com/product/\(id)") : nil }
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {

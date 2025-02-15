@@ -1,10 +1,3 @@
-
-// hub(peripheral)?.write(Request.hubAlerts(.requestUpdate(.lowVoltage)).value())
-// hub(peripheral)?.write(Request.hubProperties(.notifyAdvertisingName(true)).value())
-// hub(peripheral)?.write(Request.hubProperties(.resetAdvertisingName).value())
-// hub(peripheral)?.write(Request.hubProperties(.setAdvertisingName("Untitled")).value())
-
-
 public enum Request {
     public protocol Encoding {
         func value() -> [UInt8]
@@ -12,9 +5,8 @@ public enum Request {
     
     case hubProperties(_ request: Property.Request)
     case hubAlerts(_ request: Alert.Request)
-    
-    case portModeInformation(_ id: UInt8, mode: ModeInformation)
-    case portOutputCommand
+    case portInputFormatSetup(_ request: InputFormatSetup.Request)
+    case portOutputCommand(_ request: OutputCommand.Request)
 }
 
 public typealias Encoding = Request.Encoding
@@ -26,7 +18,8 @@ extension Request: Encoding {
         switch self {
         case .hubProperties(let request): request.value(header: 0x01)
         case .hubAlerts(let request): request.value(header: 0x03)
-        default: []
+        case .portInputFormatSetup(let request): request.value(header: InputFormatSetup.single.id)
+        case .portOutputCommand(let request): request.value(header: 0x81)
         }
     }
 }
