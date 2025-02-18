@@ -1,13 +1,17 @@
 public enum OutputCommand {
     public enum Flag: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
-        case immediate = 0x10
+        case none = 0x00
         case feedback = 0x01
+        case immediate = 0x10
+        case all = 0x11
         
         // MARK: CustomStringConvertible
         public var description: String {
             switch self {
-            case .immediate: "immediate"
+            case .none: "none"
             case .feedback: "feedback"
+            case .immediate: "immediate"
+            case .all: "all"
             }
         }
         // MARK: Identifiable
@@ -15,25 +19,13 @@ public enum OutputCommand {
     }
     
     public enum Request: Encoding {
-        case setRGBColor(port: UInt8, mode: UInt8, flags: [Flag], color: RGBColor)
+        case setRGBColor(port: UInt8, flag: Flag = .feedback, color: RGBColor)
         
         // MARK: Encoding
         public func value() -> [UInt8] {
             switch self {
-            case .setRGBColor(let port, let mode, let flags, let color): [port] + flags.value() + [0x51, mode] + color.value()
+            case .setRGBColor(let port, let flag, let color): [port, flag.id, 0x51] + color.value()
             }
         }
-    }
-}
-
-extension Array: Encoding where Element == OutputCommand.Flag {
-    
-    // MARK: Encoding
-    public func value() -> [UInt8] {
-        var value: UInt8 = 0
-        for flag in self {
-            value |= flag.rawValue
-        }
-        return [value]
     }
 }

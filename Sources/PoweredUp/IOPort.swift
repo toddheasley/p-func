@@ -1,8 +1,7 @@
 public struct IOPort: CustomStringConvertible, Identifiable {
     public let device: Device?
-    public internal(set) var modeInformation: [UInt8: ModeInformation] = [:]
     
-    public var name: String? {
+    public var label: String? {
         switch id {
         case 0x00: "A"
         case 0x01: "B"
@@ -18,7 +17,7 @@ public struct IOPort: CustomStringConvertible, Identifiable {
     }
     
     // MARK: CustomStringConvertible
-    public var description: String { (name ?? "").isEmpty ? "\(id)" : "\(name!) (\(id))" }
+    public var description: String { "\(id)\(label != nil ? " (\(label!))" : "")" }
     
     // MARK: Identifiable
     public let id: UInt8

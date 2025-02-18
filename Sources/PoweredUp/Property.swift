@@ -23,7 +23,6 @@ public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Id
     public enum Payload: Decoding {
         case advertisingName(_ name: String)
         case batteryVoltage(_ percent: Int)
-        case wirelessProtocolVersion(_ version: Version)
         
         // MARK: Decoding
         public init?(_ value: [UInt8]?) {
@@ -34,9 +33,6 @@ public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Id
             case .batteryVoltage:
                 guard let percent: Int = Int(value?.offset(2)) else { return nil }
                 self = .batteryVoltage(percent)
-            case .wirelessProtocolVersion:
-                guard let version: Version = Version(value) else { return nil }
-                self = .wirelessProtocolVersion(version)
             default:
                 return nil
             }
@@ -64,7 +60,6 @@ public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Id
     
     case advertisingName = 0x01
     case batteryVoltage = 0x06
-    case wirelessProtocolVersion = 0x0A
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
@@ -76,7 +71,6 @@ public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Id
         switch self {
         case .advertisingName: "advertising name"
         case .batteryVoltage: "battery voltage (percent)"
-        case .wirelessProtocolVersion: "LEGO Wireless Protocol version"
         }
     }
     
@@ -105,7 +99,7 @@ extension Int: Decoding {
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
-        guard let value, value.count == 1 else { return nil }
-        self = Data(bytes: value, count: 1).reduce(0) { $0 << 8 | Int($1) }
+        guard let value: UInt8 = value?.first else { return nil }
+        self = Self(value)
     }
 }

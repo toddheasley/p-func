@@ -1,51 +1,52 @@
 import Foundation
 
-// I/O device types:
+// I/O device:
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#io-type-id
 
-public enum Device: UInt16, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
-    case motor = 0x0001
-    case trainMotor = 0x0002
-    case ledLight = 0x0008
-    case voltage = 0x0014
-    case current = 0x0015
-    case rgbLight = 0x0017
-    case visionSensor = 0x0025
-    case linearMotor = 0x002E
+public class Device: Decoding, CustomStringConvertible, Identifiable {
+    public static func device(_ value: [UInt8]?) -> Device? {
+        [ // Known devices
+            LEDLight.self,
+            LinearMotor.self,
+            Motor.self,
+            RGBLight.self,
+            TiltSensor.self,
+            TrainMotor.self,
+            VisionSensor.self,
+            Voltage.self,
+            Self.self // Catch-all "unknown device" base
+        ].compactMap { $0.init(value) }.first
+    }
     
-    public var url: URL? { id.filter("0123456789".contains).count > 4 ? URL(string: "https://www.lego.com/product/\(id)") : nil }
+    public protocol Delegate: AnyObject {
+        func write(_ value: [UInt8]?)
+    }
+    
+    weak public var delegate: Delegate?
+    public let port: UInt8?
+    
+    private var _id: UInt16 = 0x0000
+    
+    // MARK: Decoding
+    public required init?(_ value: [UInt8]?) {
+        guard let id: UInt16 = UInt16(value?.offset(2)) else { return nil }
+        port = value?[0]
+        _id = id
+        guard id == self.id else { return nil }
+    }
+    
+    // MARK: CustomStringConvertible
+    public var description: String { "unknown device" }
+    
+    // MARK: Identifiable
+    public var id: UInt16 { _id }
+}
+
+extension UInt16: Decoding {
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
         guard let value, value.count > 1 else { return nil }
-        self.init(rawValue: UInt16(value[1]) << 8 | UInt16(value[0]))
-    }
-    
-    // MARK: CustomStringConvertible
-    public var description: String {
-        switch self {
-        case .motor: "motor"
-        case .trainMotor: "train motor (88011)"
-        case .ledLight: "LED light (88005)"
-        case .voltage: "voltage"
-        case .current: "current"
-        case .rgbLight: "RGB light"
-        case .visionSensor: "color & distance sensor (88007)"
-        case .linearMotor: "Technic large motor (88013)"
-        }
-    }
-    
-    // MARK: Identifiable
-    public var id: String {
-        switch self {
-        case .motor: "motor"
-        case .trainMotor: "train-motor-88011"
-        case .ledLight: "light-88005"
-        case .voltage: "voltage"
-        case .current: "current"
-        case .rgbLight: "rgb-light"
-        case .visionSensor: "color-distance-sensor-88007"
-        case .linearMotor: "technic-large-motor-88013"
-        }
+        self = Self(value[1]) << 8 | Self(value[0])
     }
 }

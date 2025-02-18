@@ -84,7 +84,8 @@ import CoreBluetooth
     // MARK: CBCentralManagerDelegate
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
         guard !(hubs.map { $0.identifier }.contains(peripheral.identifier)),
-              let hub: Hub = Hub(peripheral: peripheral, advertisementData: AdvertisementData(advertisementData), rssi: RSSI(rssi)) else { return }
+              let hub: Hub = .hub(peripheral: peripheral, advertisementData: AdvertisementData(advertisementData)) else { return }
+        hub.rssi = RSSI(rssi)
         hubs.append(hub)
         manager.connect(hub.peripheral) // Connect new hub
     }

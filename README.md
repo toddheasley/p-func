@@ -12,7 +12,10 @@ __Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and c
 | --- | --- |
 | [88012&nbsp;Technic™&nbsp;Hub ![](docs/technic-hub-88012.png)](https://www.lego.com/product/technic-hub-88012) | [88013&nbsp;Technic™&nbsp;Large&nbsp;Motor ![](docs/technic-large-motor-88013.png)](https://www.lego.com/product/technic-large-motor-88013) |
 | [88009&nbsp;Hub ![](docs/hub-88009.png)](https://www.lego.com/product/hub-88009) | [88011&nbsp;Train&nbsp;Motor ![](docs/train-motor-88011.png)](https://www.lego.com/product/train-motor-88011) |
+| &nbsp; | [88007&nbsp;Color & Distance Sensor ![LEGO® Powered Up 88007 Color & Distance Sensor](docs/color-distance-sensor-88007.png)](https://www.lego.com/product/color-distance-sensor-88007) |
 | &nbsp; | [88005&nbsp;Light ![LEGO® Powered Up 88005 Light](docs/light-88005.png)](https://www.lego.com/product/light-88005) |
+
+color-distance-sensor-88007.png
 
 ### Supported Platforms
 

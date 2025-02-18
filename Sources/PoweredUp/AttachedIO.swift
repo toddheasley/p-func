@@ -26,7 +26,7 @@ public enum AttachedIO: Decoding {
         guard let value else { return nil }
         switch Event(value.offset(1)) {
         case .attached:
-            self = .attached(value[0], device: Device(value.offset(2)))
+            self = .attached(value[0], device: .device(value))
         case .detached:
             self = .detached(value[0])
         default: // Virtual/combined not implemented

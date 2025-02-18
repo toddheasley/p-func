@@ -1,13 +1,24 @@
 import CoreBluetooth
+import OSLog
 
-public class Hub: Equatable, Identifiable {
+public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable{
+    public static func hub(peripheral: CBPeripheral, advertisementData: AdvertisementData) -> Hub? {
+        [ // Known hubs
+            TechnicHub.self,
+            Hub.self
+        ].compactMap { $0.init(peripheral: peripheral, advertisementData: advertisementData) }.first
+    }
+    
     public typealias State = CBPeripheralState
     
-    public let system: System
     public internal(set) var ports: [UInt8: IOPort] = [:]
-    public internal(set) var rssi: RSSI
+    
+    
+    
+    public internal(set) var rssi: RSSI = -100
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
+    public var system: UInt8 { 0b01000001 }
     
     let peripheral: CBPeripheral
     let advertisementData: AdvertisementData
@@ -15,46 +26,45 @@ public class Hub: Equatable, Identifiable {
     func handle(value data: Data?) {
         guard let data else { return }
         let value: [UInt8] = Array(data)
+        Logger.debug("value: \(value.hexDescription)")
         switch Response(value.offset(2)) {
         case .hubProperties:
             switch Property.Payload(value.offset(3)) {
             case .advertisingName(let name):
-                print("name: \(name)")
-            case .batteryVoltage(let percent):
-                print("percent: \(percent)")
-            case .wirelessProtocolVersion(let version):
-                print("version \(version)")
+                Logger.debug("\(Property.advertisingName): \(name)")
+            case .batteryVoltage(let voltage):
+                print("\(Property.batteryVoltage): \(voltage)")
             default:
                 break
             }
         case .hubAlerts:
             guard let alert: Alert = Alert(value.offset(3)) else { break }
-            print("alert: \(alert)")
+            Logger.debug("alert: \(alert)")
         case .hubAttached:
             switch AttachedIO(value.offset(3)) {
             case .attached(let id, let device):
                 ports[id] = IOPort(id, device: device)
-                print("attached: \(id) \(device?.description ?? "nil")")
+                Logger.debug("attached \(IOPort(id)): \(device?.description ?? "nil")")
             case .detached(let id):
                 ports[id] = IOPort(id)
-                print("detached: \(id)")
             default:
                 break
             }
         case .genericError:
-            guard let genericError: GenericError = GenericError(value.offset(3)) else { break }
-            print("error: \(genericError)")
+            guard let error: GenericError = GenericError(value.offset(3)) else { break }
+            Logger.debug("error: \(error)")
+        case .portInformation:
+            Logger.debug("port information")
+        case .portModeInformation:
+            Logger.debug("port mode information")
+            switch ModeInformation.Payload(value.offset(3)) {
+            default: break
+            }
+        case .portValueSingle:
+            print("portValueSingle")
         default:
             break
         }
-    }
-    
-    func write(_ value: [UInt8]?) {
-        guard let characteristic: CBCharacteristic = peripheral.characteristic,
-              let value else {
-            return
-        }
-        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse)
     }
     
     func refreshRSSI() {
@@ -62,13 +72,27 @@ public class Hub: Equatable, Identifiable {
         peripheral.readRSSI()
     }
     
-    init?(peripheral: CBPeripheral, advertisementData: AdvertisementData, rssi: RSSI) {
-        guard let system: System = advertisementData.system else { return nil } // Only connect to supported models
-        self.system = system
+    required init?(peripheral: CBPeripheral, advertisementData: AdvertisementData) {
         self.peripheral = peripheral
         self.advertisementData = advertisementData
-        self.rssi = rssi
+        guard advertisementData.manufacturerData?[3] == system else { return nil } // Only connect to supported models
     }
+    
+    // MARK: Device.Delegate
+    public func write(_ value: [UInt8]?) {
+        guard let characteristic: CBCharacteristic = peripheral.characteristic,
+              let value else {
+            return
+        }
+        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse)
+        Logger.debug("write: \(value.hexDescription)")
+    }
+    
+    // MARK: CustomStringConvertible
+    public var description: String { "hub (88009)" }
+    
+    // MARK: Product
+    public var path: String { "hub-88009" }
     
     // MARK: Equatable {
     public static func ==(lhs: Hub, rhs: Hub) -> Bool {

@@ -5,7 +5,7 @@ public enum InputFormatSetup: UInt8, Identifiable {
         // MARK: Encoding
         public func value() -> [UInt8] {
             switch self {
-            case .single(let port, let mode, let delta, let notify): [port, mode] + delta.value() + [notify ? 1 : 0]
+            case .single(let port, let mode, let delta, let notify): [port, mode] + delta.value() + [notify ? 0x01 : 0x00]
             }
         }
     }
