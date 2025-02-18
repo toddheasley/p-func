@@ -33,7 +33,7 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
             case .advertisingName(let name):
                 Logger.debug("\(Property.advertisingName): \(name)")
             case .batteryVoltage(let voltage):
-                print("\(Property.batteryVoltage): \(voltage)")
+                Logger.debug("\(Property.batteryVoltage): \(voltage)")
             default:
                 break
             }
@@ -61,7 +61,7 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
             default: break
             }
         case .portValueSingle:
-            print("portValueSingle")
+            Logger.debug("port value (single)")
         default:
             break
         }
