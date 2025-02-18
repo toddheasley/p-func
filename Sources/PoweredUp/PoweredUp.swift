@@ -147,10 +147,3 @@ extension PoweredUp.State: @retroactive CustomStringConvertible {
     // CustomStringConvertible
     public var description: String { "Bluetooth \(status)"}
 }
-
-extension CBUUID {
-    
-    // Specific to LEGO hubs: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#lego-specific-gatt-service
-    static var characteristic: Self { Self(string: "00001624-1212-EFDE-1623-785FEABCD123") }
-    static var service: Self { Self(string: "00001623-1212-EFDE-1623-785FEABCD123") }
-}

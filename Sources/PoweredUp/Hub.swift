@@ -1,7 +1,13 @@
 import CoreBluetooth
 import OSLog
 
-public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable{
+// Powered Up hub (8809)
+// https://www.lego.com/product/hub-88009
+//
+// AKA "City hub"; "2-port hub"; "train hub"
+// * Doubles as base class for `TechnicHub`
+
+public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable {
     public static func hub(peripheral: CBPeripheral, advertisementData: AdvertisementData) -> Hub? {
         [ // Known hubs
             TechnicHub.self,
@@ -11,10 +17,7 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
     
     public typealias State = CBPeripheralState
     
-    public internal(set) var ports: [UInt8: IOPort] = [:]
-    
-    
-    
+    public internal(set) var ports: [IOPort: Device?] = [:]
     public internal(set) var rssi: RSSI = -100
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
@@ -42,11 +45,12 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
             Logger.debug("alert: \(alert)")
         case .hubAttached:
             switch AttachedIO(value.offset(3)) {
-            case .attached(let id, let device):
-                ports[id] = IOPort(id, device: device)
-                Logger.debug("attached \(IOPort(id)): \(device?.description ?? "nil")")
-            case .detached(let id):
-                ports[id] = IOPort(id)
+            case .attached(let port, let device):
+                ports[port] = device
+                Logger.debug("attached \(port): \(device?.description ?? "nil")")
+            case .detached(let port):
+                ports[port] = nil
+                Logger.debug("detached \(port)")
             default:
                 break
             }

@@ -1,3 +1,10 @@
+
+// Hub built-in RGB light programmable colors
+// https://github.com/sharpbrick/docs/blob/master/devices/rgblight.md
+//
+// Set `RGBLight` to one of a number of preset colors (mode 0) or custom RGB (mode 1)
+// * Custom RGB value (mode 1) scale is 0-255
+
 public enum RGBColor: Sendable, CustomStringConvertible, Encoding {
     public enum Preset: UInt8, Sendable, CaseIterable, CustomStringConvertible, Identifiable {
         case black = 0x00

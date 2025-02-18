@@ -1,6 +1,11 @@
 
 // Hub attached I/O
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-attached-i-o
+//
+// Hubs have different combinations of built-in and pluggable ports; devices attach to ports
+// * External ports emit attached and detached events as needed
+// * All ports emit attached events on hub connection
+// * Events tell hubs (1) which ports it has and (2) which devices are attached to which ports
 
 public enum AttachedIO: Decoding {
     public enum Event: UInt8, CaseIterable, Decoding, Identifiable {
@@ -17,18 +22,21 @@ public enum AttachedIO: Decoding {
         public var id: UInt8 { rawValue }
     }
     
-    case attached(_ port: UInt8, device: Device?)
-    case attachedVirtual(_ port: UInt8, device: Device?, combine: (UInt8, UInt8))
-    case detached(_ port: UInt8)
+    case attached(_ port: IOPort, device: Device?)
+    case attachedVirtual(_ port: IOPort, device: Device?, combine: (IOPort, IOPort))
+    case detached(_ port: IOPort)
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
-        guard let value else { return nil }
+        guard let value,
+              let port: IOPort = IOPort(value) else {
+            return nil
+        }
         switch Event(value.offset(1)) {
         case .attached:
-            self = .attached(value[0], device: .device(value))
+            self = .attached(port, device: .device(value))
         case .detached:
-            self = .detached(value[0])
+            self = .detached(port)
         default: // Virtual/combined not implemented
             return nil
         }

@@ -1,7 +1,11 @@
 import Foundation
 
-// I/O device:
+// I/O device
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#io-type-id
+//
+// Base class for hub-attached devices
+// * Sub-class represents unique "I/O type"; implements specific function(s)
+// * Base class doubles as "unknown" (unsupported) device for port attachments
 
 public class Device: Decoding, CustomStringConvertible, Identifiable {
     public static func device(_ value: [UInt8]?) -> Device? {

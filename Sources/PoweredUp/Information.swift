@@ -1,3 +1,7 @@
+
+// Port information
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#port-information-request
+
 public enum Information: UInt8, CaseIterable, Decoding, Identifiable {
     public enum Payload: Decoding {
         

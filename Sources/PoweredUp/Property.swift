@@ -2,6 +2,12 @@ import Foundation
 
 // Hub properties
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-properties
+//
+// Set hub properties, request and subscribe to value changes
+// * Advertising name up to 14 ASCII characters
+// * Advertising name changes persist on hub; hub reset reverts to factory value
+// * Battery voltage value scale is 0-100 percent
+// * RSSI value provided by `CBPeripheralDelegate`, not implemented here
 
 public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
     public enum Operation: UInt8, CaseIterable, Identifiable {
@@ -94,7 +100,7 @@ extension String: Decoding, Encoding {
 
 extension Int: Decoding {
     
-    // MAX_NAME_SIZE: https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-payload
+    // MAX_NAME_SIZE: https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-property-payload
     static let maxNameSize: Int = 14
     
     // MARK: Decoding

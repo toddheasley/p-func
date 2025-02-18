@@ -2,6 +2,10 @@ import CoreBluetooth
 
 // Advertising
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#advertising
+//
+// Standard dictionary "advertised" by all Bluetooth peripherals
+// * `PoweredUp` expects LEGO devices to advertise single, LEGO-specific GATT service
+// * Hub type ("system" in LEGO parlance; e.g., 4-port `TechnicHub` or 2-port "City" `Hub`) derived from manufacturer data
 
 public struct AdvertisementData {
     public let serviceUUIDs: [CBUUID]
@@ -17,4 +21,11 @@ public struct AdvertisementData {
         }
         isConnectable = dictionary?[CBAdvertisementDataIsConnectable] as? Bool
     }
+}
+
+extension CBUUID {
+    
+    // Specific to LEGO hubs: https://lego.github.io/lego-ble-wireless-protocol-docs/#lego-specific-gatt-service
+    static var characteristic: Self { Self(string: "00001624-1212-EFDE-1623-785FEABCD123") }
+    static var service: Self { Self(string: "00001623-1212-EFDE-1623-785FEABCD123") }
 }

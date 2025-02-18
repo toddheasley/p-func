@@ -1,3 +1,7 @@
+
+// Port output command
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#port-output-command
+
 public enum OutputCommand {
     public enum Flag: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
         case none = 0x00

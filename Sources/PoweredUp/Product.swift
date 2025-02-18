@@ -1,5 +1,8 @@
 import Foundation
 
+// LEGO product catalog link to supported hub or device
+// https://www.lego.com/themes/powered-up
+
 public protocol Product: CustomStringConvertible {
     var path: String { get }
     var url: URL? { get }

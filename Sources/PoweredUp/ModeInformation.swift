@@ -1,3 +1,7 @@
+
+// Port mode information
+// https://lego.github.io/lego-ble-wireless-protocol-docs/#port-mode-information-request
+
 public enum ModeInformation: UInt8, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
     public enum Payload: Decoding {
         case name(_ name: String)
