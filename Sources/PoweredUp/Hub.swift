@@ -4,7 +4,7 @@ import OSLog
 // Powered Up hub (8809)
 // https://www.lego.com/product/hub-88009
 //
-// AKA "City hub"; "2-port hub"; "train hub"
+// AKA "City hub," "2-port hub," "train hub"
 // * Doubles as base class for `TechnicHub`
 
 public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable {

@@ -4,8 +4,6 @@ extension Logger {
     static func debug(_ message: String) {
 #if DEBUG
         Self(subsystem: .subsystem, category: "lego-wireless-protocol").debug("\(message)")
-#else
-        nil
 #endif
     }
 }
