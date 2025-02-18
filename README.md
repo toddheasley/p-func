@@ -1,6 +1,6 @@
 # `PoweredUp`
 
-__Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and control attached lights, motors and sensors from a friendly `@Observable` Swift interface.__
+__Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and control attached lights, motors and sensors from an `@Observable` Swift interface.__
 
 [![LEGO® Powered Up 88010 Remote Control](docs/remote-control-88010.png)](https://www.lego.com/product/remote-control-88010)
 
@@ -12,10 +12,7 @@ __Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and c
 | --- | --- |
 | [88012&nbsp;Technic™&nbsp;Hub ![](docs/technic-hub-88012.png)](https://www.lego.com/product/technic-hub-88012) | [88013&nbsp;Technic™&nbsp;Large&nbsp;Motor ![](docs/technic-large-motor-88013.png)](https://www.lego.com/product/technic-large-motor-88013) |
 | [88009&nbsp;Hub ![](docs/hub-88009.png)](https://www.lego.com/product/hub-88009) | [88011&nbsp;Train&nbsp;Motor ![](docs/train-motor-88011.png)](https://www.lego.com/product/train-motor-88011) |
-| &nbsp; | [88007&nbsp;Color & Distance Sensor ![LEGO® Powered Up 88007 Color & Distance Sensor](docs/color-distance-sensor-88007.png)](https://www.lego.com/product/color-distance-sensor-88007) |
-| &nbsp; | [88005&nbsp;Light ![LEGO® Powered Up 88005 Light](docs/light-88005.png)](https://www.lego.com/product/light-88005) |
-
-color-distance-sensor-88007.png
+| [88007&nbsp;Color & Distance Sensor ![LEGO® Powered Up 88007 Color & Distance Sensor](docs/color-distance-sensor-88007.png)](https://www.lego.com/product/color-distance-sensor-88007) | [88005&nbsp;Light ![LEGO® Powered Up 88005 Light](docs/light-88005.png)](https://www.lego.com/product/light-88005) |
 
 ### Supported Platforms
 
@@ -26,3 +23,7 @@ Written in [Swift](https://developer.apple.com/documentation/swift) 6 for Apple 
 * [visionOS](https://developer.apple.com/visionos) 2
 
 Build with [Xcode](https://developer.apple.com/xcode) 16 or newer.
+
+### Acknowledgments
+
+I always struggle to make sense of Bluetooth hardware APIs, and LEGO Wireless Protocol is no exception. I got this far by reading [sharpbrick's "missing device docs"](https://github.com/sharpbrick/docs) and [smartbotkit lwp.](https://github.com/smartbotkit/lwp)
