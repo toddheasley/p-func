@@ -1,7 +1,7 @@
 import Combine
 import CoreBluetooth
 
-@Observable  public class PoweredUp: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+@Observable  public class PFunc: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     public typealias State = CBManagerState
     
     public private(set) var state: State = .unknown
@@ -132,7 +132,7 @@ import CoreBluetooth
     }
 }
 
-extension PoweredUp.State: @retroactive CustomStringConvertible {
+extension PFunc.State: @retroactive CustomStringConvertible {
     private var status: String {
         switch self {
         case .poweredOn: "powered on"

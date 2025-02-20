@@ -1,29 +1,24 @@
-# `PoweredUp`
+# `PFunc`
 
-__Connect [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs and control attached lights, motors and sensors from an `@Observable` Swift interface.__
+__Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swift interface.__
 
-[![LEGO® Powered Up 88010 Remote Control](docs/remote-control-88010.png)](https://www.lego.com/product/remote-control-88010)
-
-`PoweredUp` implements enough of the [LEGO® Wireless Protocol](https://lego.github.io/lego-ble-wireless-protocol-docs) to replace the [88010 Remote Control](https://www.lego.com/product/remote-control-88010) and drive the current generation of Powered Up attachments from the 2- and 4-port consumer hubs.
+`PFunc` communicates with [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs over Bluetooth Low Energy (BLE). [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) does the heavy lifting, managing connections and writing instructions to the hubs. `PFunc` implements _just_ enough of the [LEGO® Wireless Protocol](https://lego.github.io/lego-ble-wireless-protocol-docs) to replace the [88010 Remote Control](https://www.lego.com/product/remote-control-88010) and drive the current generation of Powered Up attachments from the 2- and 4-port consumer hubs.
 
 ### Supported Hubs
 
 | [88012&nbsp;Technic™&nbsp;Hub](https://www.lego.com/product/technic-hub-88012) | [88009&nbsp;Hub](https://www.lego.com/product/hub-88009) |
 | --- | --- |
 | ![](docs/technic-hub-88012.png) | ![](docs/hub-88009.png) |
-| &nbsp; | &nbsp; |
 
-### Supported Motors and Attachments
+### Supported Attachments
 
 | [88011&nbsp;Train&nbsp;Motor](https://www.lego.com/product/train-motor-88011) | [88013&nbsp;Technic™&nbsp;Large&nbsp;Motor](https://www.lego.com/product/technic-large-motor-88013) |
 | --- | --- |
 | ![](docs/train-motor-88011.png) | ![](docs/technic-large-motor-88013.png) |
-| &nbsp; | &nsbp; |
 
-| [88007&nbsp;Color & Distance Sensor](https://www.lego.com/product/color-distance-sensor-88007) | [88005&nbsp;Light](https://www.lego.com/product/light-88005) |
+| [88005&nbsp;Light](https://www.lego.com/product/light-88005) | &nbsp; |
 | --- | --- |
-| ![](docs/color-distance-sensor-88007.png) | ![](docs/light-88005.png) |
-| &nbsp; | &nbsp; |
+| ![](docs/light-88005.png) | ![](docs/-.png) |
 
 ### Supported Platforms
 
@@ -39,7 +34,7 @@ Build with [Xcode](https://developer.apple.com/xcode) 16 or newer.
 
 If you're reading this, good chance you actually want [Pybricks.](https://pybricks.com) If I'm LEGO, I totally rebase [LPF2](https://brickarchitect.com/powered-up) on Pybricks; it's just _astonishingly_ good. I'm headed there next myself.
 
-Unfortunately, my LEGO automation desire is a native Mac and iOS app that connects and drives any Powered Up train hub _running any version of stock LPF2 firmware_. Slogging through dogshit Bluetooth APIs seems to be my karmic penance for something done in a previous life. Fortunately, a few others have slogged first:
+Unfortunately, I wanted a _native_ Mac/iOS app that connects and drives any Powered Up train hub _running any version of stock LPF2 firmware_. And slogging through dogshit Bluetooth APIs seems to be my karmic penance for something horrible done in a previous life. Fortunately, a few others already slogged:
 
 * [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
 * [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)

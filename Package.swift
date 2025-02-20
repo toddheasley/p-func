@@ -2,17 +2,17 @@
 
 import PackageDescription
 
-let package: Package = Package(name: "powered-up", platforms: [
+let package: Package = Package(name: "p-func", platforms: [
         .macOS(.v15),
         .iOS(.v18),
         .visionOS(.v2)
     ], products: [
-        .library(name: "PoweredUp", targets: [
-            "PoweredUp"
+        .library(name: "PFunc", targets: [
+            "PFunc"
         ])
     ], targets: [
-        .target(name: "PoweredUp"),
-        .testTarget(name: "PoweredUpTests", dependencies: [
-            "PoweredUp"
+        .target(name: "PFunc"),
+        .testTarget(name: "PFuncTests", dependencies: [
+            "PFunc"
         ])
     ])

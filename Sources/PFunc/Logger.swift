@@ -9,7 +9,7 @@ extension Logger {
 }
 
 private extension String {
-    static let subsystem: Self = "com.toddheasley.powered-up"
+    static let subsystem: Self = "com.toddheasley.p-func"
 }
 
 protocol CustomHexStringConvertible {

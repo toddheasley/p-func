@@ -1,4 +1,4 @@
-@testable import PoweredUp
+@testable import PFunc
 import Testing
 
 struct ResponseTests {
