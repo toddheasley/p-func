@@ -23,12 +23,14 @@ public enum OutputCommand {
     }
     
     public enum Request: Encoding {
-        case setRGBColor(port: UInt8, flag: Flag = .feedback, color: RGBColor)
+        case setRGBColor(_ port: UInt8, flag: Flag = .feedback, color: RGBColor)
+        case startPower(_ port: UInt8, flag: Flag = .feedback, power: Power)
         
         // MARK: Encoding
         public func value() -> [UInt8] {
             switch self {
             case .setRGBColor(let port, let flag, let color): [port, flag.id, 0x51] + color.value()
+            case .startPower(let port, let flag, let power): [port, flag.id, 0x51, 0x00] + power.value()
             }
         }
     }

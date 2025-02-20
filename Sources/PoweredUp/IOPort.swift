@@ -4,9 +4,8 @@
 //
 // Hubs have different combinations of built-in and pluggable ports; devices attach to ports
 // * All hubs have same internal RGB status light and battery voltage sensors (at same port addresses)
-// * 2-port "City" `Hub` includes 2 pluggable, external ports: A, B
+// * `Hub` includes 2 pluggable, external ports: A, B
 // * `TechnicHub` includes 4 pluggable, external ports: A, B, C, D
-// * `TechnicHub` includes a host of onboard sensors, but only `TiltSensor` support implemented
 // * Port addresses are standard accross hubs
 
 public enum IOPort: Hashable, RawRepresentable, Decoding, CustomStringConvertible, Identifiable {

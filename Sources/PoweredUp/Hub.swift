@@ -1,7 +1,7 @@
 import CoreBluetooth
 import OSLog
 
-// Powered Up hub (8809)
+// Powered Up Hub (88009)
 // https://www.lego.com/product/hub-88009
 //
 // AKA "City hub," "2-port hub," "train hub"
@@ -46,8 +46,15 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
         case .hubAttached:
             switch AttachedIO(value.offset(3)) {
             case .attached(let port, let device):
+                device?.delegate = self
                 ports[port] = device
                 Logger.debug("attached \(port): \(device?.description ?? "nil")")
+                if let device: RGBLight = device as? RGBLight {
+                    device.color = .preset(.red)
+                }
+                if let device: TrainMotor = device as? TrainMotor {
+                    device.power = .float
+                }
             case .detached(let port):
                 ports[port] = nil
                 Logger.debug("detached \(port)")
@@ -60,15 +67,26 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
         case .portInformation:
             Logger.debug("port information")
         case .portModeInformation:
-            Logger.debug("port mode information")
             switch ModeInformation.Payload(value.offset(3)) {
-            default: break
+            case .name(let name):
+                Logger.debug("port mode name: \(name)")
+            default:
+                Logger.debug("port mode information")
             }
         case .portValueSingle:
             Logger.debug("port value (single)")
         default:
             break
         }
+    }
+    
+    public func write(_ value: [UInt8]?) {
+        guard let characteristic: CBCharacteristic = peripheral.characteristic,
+              let value else {
+            return
+        }
+        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse)
+        Logger.debug("write: \(value.hexDescription)")
     }
     
     func refreshRSSI() {
@@ -83,13 +101,8 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
     }
     
     // MARK: Device.Delegate
-    public func write(_ value: [UInt8]?) {
-        guard let characteristic: CBCharacteristic = peripheral.characteristic,
-              let value else {
-            return
-        }
-        peripheral.writeValue(Data(value), for: characteristic, type: .withResponse)
-        Logger.debug("write: \(value.hexDescription)")
+    public func write(_ request: Request) {
+        write(request.value())
     }
     
     // MARK: CustomStringConvertible

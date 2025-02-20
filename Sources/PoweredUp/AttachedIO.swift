@@ -4,7 +4,7 @@
 //
 // Hubs have different combinations of built-in and pluggable ports; devices attach to ports
 // * External ports emit attached and detached events as needed
-// * All ports emit attached events on hub connection
+// * All ports emit attached/detached events on hub connection
 // * Events tell hubs (1) which ports it has and (2) which devices are attached to which ports
 
 public enum AttachedIO: Decoding {

@@ -1,4 +1,11 @@
 public class RGBLight: Device {
+    public var color: RGBColor = .default {
+        didSet {
+            guard let port else { return }
+            delegate?.write(Request.portInputFormatSetup(.single(port, mode: color.mode, delta: 1, notify: true)))
+            delegate?.write(Request.portOutputCommand(.setRGBColor(port, flag: .all, color: color)))
+        }
+    }
     
     // MARK: Device
     override public var description: String { "RGB light" }

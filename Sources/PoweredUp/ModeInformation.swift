@@ -14,9 +14,11 @@ public enum ModeInformation: UInt8, CaseIterable, Decoding, CustomStringConverti
         
         // MARK: Decoding
         public init?(_ value: [UInt8]?) {
+            guard let value else { return nil }
             switch ModeInformation(value) {
             case .name:
-                return nil
+                guard let name: String = String(value.offset(3)) else { return nil }
+                self = .name(name)
             case .raw:
                 return nil
             case .pct:
@@ -56,7 +58,7 @@ public enum ModeInformation: UInt8, CaseIterable, Decoding, CustomStringConverti
     
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
-        self.init(rawValue: value?[0] ?? 0x06)
+        self.init(rawValue: value?[2] ?? 0x06)
     }
     
     // MARK: CustomStringConvertible

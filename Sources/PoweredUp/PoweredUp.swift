@@ -119,8 +119,8 @@ import CoreBluetooth
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: (any Error)?) {
-        hub(peripheral)?.write(Request.hubProperties(.notifyAdvertisingName(true)).value())
-        hub(peripheral)?.write(Request.hubProperties(.notifyBatteryVoltage(true)).value())
+        hub(peripheral)?.write(Request.hubProperties(.notifyAdvertisingName(true)))
+        hub(peripheral)?.write(Request.hubProperties(.notifyBatteryVoltage(true)))
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: (any Error)?) {

@@ -1,5 +1,5 @@
 
-// Technic hub (88012)
+// Technic Hub (88012)
 // https://www.lego.com/product/technic-hub-88012
 
 public class TechnicHub: Hub {
