@@ -4,7 +4,7 @@ import CoreBluetooth
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#advertising
 //
 // Standard dictionary "advertised" by all Bluetooth peripherals
-// * `PoweredUp` expects LEGO devices to advertise single, LEGO-specific GATT service
+// * `PFunc` expects LEGO devices to advertise single, LEGO-specific GATT service
 // * Hub type ("system" in LEGO parlance; e.g., 4-port `TechnicHub` or 2-port "City" `Hub`) derived from manufacturer data
 
 public struct AdvertisementData {
