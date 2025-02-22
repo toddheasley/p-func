@@ -10,16 +10,23 @@ import Foundation
 
 public class TrainMotor: Device, Product {
     public enum Ramp: Double {
-        case gradual = 3.5
-        case `default` = 1.0
+        case gradual = 0.66
+        case `default` = 0.33
     }
     
     public func ramp(_ ramp: Ramp = .default, to power: Power) {
-        subscriber = (power, Timer.publish(every: ramp.rawValue, on: .main, in: .common)
+        timer?.cancel() // Interrupt in-progress ramp
+        steps = self.power.steps(to: power) // Ramp from current power
+        timer = Timer.publish(every: ramp.rawValue, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                
-            })
+                guard let rawValue: Int = self.steps.first, let power: Power = Power(rawValue: rawValue) else {
+                    self.timer?.cancel()
+                    return
+                }
+                self.power = power
+                self.steps = Array(self.steps.dropFirst())
+            }
     }
     
     public var power: Power = .float {
@@ -29,7 +36,8 @@ public class TrainMotor: Device, Product {
         }
     }
     
-    private var subscriber: (target: Power, timer: AnyCancellable)?
+    private var timer: AnyCancellable?
+    private var steps: [Int] = []
     
     // MARK: Device
     override public var description: String { "train motor (88011)" }

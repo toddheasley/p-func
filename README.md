@@ -1,7 +1,5 @@
 # `PFunc`
 
-![](docs/p-func.png)
-
 __Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swift interface__
 
 `PFunc` talks to [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs over Bluetooth Low Energy (BLE). [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) does the heavy lifting, managing connections and writing instructions to the hubs.
@@ -34,9 +32,9 @@ Written in [Swift](https://developer.apple.com/documentation/swift) 6 for Apple 
 
 Build with [Xcode](https://developer.apple.com/xcode) 16 or newer.
 
-### Examples
+## Examples
 
-Apps using `PFunc` are using `CoreBluetooth`. Your app will crash if its `Info.plist` doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
+Apps using `PFunc` are using Core Bluetooth. Your app will crash if its `Info.plist` doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
 
 Additionally, app entitlements should enable Bluetooth:
 
@@ -44,11 +42,13 @@ Additionally, app entitlements should enable Bluetooth:
 | --- | --- |
 | ![](docs/entitlements-app-sandbox.png) | ![](docs/entitlements-background-modes.png) |
 
-### Acknowledgments
 
-If you're reading this, good chance you actually want [Pybricks.](https://pybricks.com) If I'm LEGO, I'd' totally rebase [LPF2](https://brickarchitect.com/powered-up) on Pybricks; it's just _astonishingly_ good. I'm headed there next myself.
 
-Unfortunately, I wanted a _native_ Mac/iOS app that connects and drives any Powered Up train hub _running any version of stock LPF2 firmware_. And slogging through dogshit Bluetooth APIs seems to be my karmic penance for something horrible done in a previous life. Fortunately, a few others already slogged:
+## Acknowledgments
+
+There's a good chance you actually want [Pybricks](https://pybricks.com), not this library. A fork of this project is looking for a way to package Pybricks so it's [App Review](https://developer.apple.com/distribute/app-review) legal, because that's what _I'd_ like to be running on my LEGO kit.
+
+Unfortunately, even if I figure that out _and_ learn Python, I still want a native Mac/iOS app that can drive Powered Up train hubs _running stock [LPF2](https://brickarchitect.com/powered-up) firmware_. No avoiding a slog through LWP. Fortunately, others already slogged:
 
 * [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
 * [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)

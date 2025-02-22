@@ -1,4 +1,12 @@
 public class LEDLight: Device, Product {
+    public typealias Intensity = LEDIntensity
+    
+    public var intensity: Intensity = .off {
+        didSet {
+            guard let port else { return }
+            delegate?.write(Request.portOutputCommand(.setLEDIntensity(port, flag: .all, intensity: intensity)))
+        }
+    }
     
     // MARK: Device
     override public var description: String { "LED light (88005)" }

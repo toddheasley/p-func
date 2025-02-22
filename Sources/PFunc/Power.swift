@@ -3,7 +3,7 @@ public enum Power: RawRepresentable, Decoding, Encoding, Identifiable {
     case reverse(Int)
     case float
     
-    public func steps(to power: Self, step: Int = 20) -> [Int] {
+    public func steps(to power: Self, step: Int = 5) -> [Int] {
         let step: Int = min(max(step, 10), 50)
         let distance: Int = distance(to: power)
         let segments: Int = max(abs(distance) / step, 1) - 1
