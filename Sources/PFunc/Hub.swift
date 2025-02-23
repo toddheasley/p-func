@@ -49,12 +49,6 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
                 device?.delegate = self
                 ports[port] = device
                 Logger.debug("attached \(port): \(device?.description ?? "nil")")
-                if let device: RGBLight = device as? RGBLight {
-                    device.color = .preset(.red)
-                }
-                if let device: TrainMotor = device as? TrainMotor {
-                    device.power = .float
-                }
             case .detached(let port):
                 ports[port] = nil
                 Logger.debug("detached \(port)")
@@ -106,7 +100,7 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
     }
     
     // MARK: CustomStringConvertible
-    public var description: String { "hub (88009)" }
+    public var description: String { "Hub (88009)" }
     
     // MARK: Product
     public var path: String { "hub-88009" }

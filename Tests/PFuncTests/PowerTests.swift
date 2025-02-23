@@ -3,12 +3,12 @@ import Testing
 
 struct PowerTests {
     @Test func steps() {
-        #expect(Power.float.steps(to: .forward(50)) == [20, 40, 50])
+        #expect(Power.float.steps(to: .forward(50)) == [10, 20, 30, 40, 50])
         #expect(Power.forward(50).steps(to: .float, step: 10) == [40, 30, 20, 10, 0])
         #expect(Power.reverse(50).steps(to: .forward(50), step: 30) == [-20, 10, 40, 50])
         #expect(Power.forward(50).steps(to: .reverse(50), step: 60) == [0, -50])
         #expect(Power.reverse(50).steps(to: .reverse(20), step: 0) == [-40, -30, -20])
-        #expect(Power.reverse(20).steps(to: .reverse(50)) == [-40, -50])
+        #expect(Power.reverse(20).steps(to: .reverse(50)) == [-30, -40, -50])
         #expect(Power.reverse(50).steps(to: .float, step: 15) == [-35, -20, -5, 0])
         #expect(Power.float.steps(to: .reverse(50), step: 17) == [-17, -34, -50])
     }

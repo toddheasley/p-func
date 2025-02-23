@@ -42,8 +42,6 @@ Additionally, app entitlements should enable Bluetooth:
 | --- | --- |
 | ![](docs/entitlements-app-sandbox.png) | ![](docs/entitlements-background-modes.png) |
 
-
-
 ## Acknowledgments
 
 There's a good chance you actually want [Pybricks](https://pybricks.com), not this library. A fork of this project is looking for a way to package Pybricks so it's [App Review](https://developer.apple.com/distribute/app-review) legal, because that's what _I'd_ like to be running on my LEGO kit.
