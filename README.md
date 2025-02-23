@@ -20,7 +20,7 @@ __Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swi
 
 | [45303&nbsp;Motor](https://www.lego.com/product/simple-medium-linear-motor-45303) | [88005&nbsp;Light](https://www.lego.com/product/light-88005) |
 | --- | --- |
-| ![](docs/simple-medium-linear-motor-45303.png | ![](docs/light-88005.png) |
+| ![](docs/simple-medium-linear-motor-45303.png) | ![](docs/light-88005.png) |
 
 ### Supported Platforms
 
