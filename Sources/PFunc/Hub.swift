@@ -17,11 +17,22 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
     
     public typealias State = CBPeripheralState
     
-    public internal(set) var ports: [IOPort: Device?] = [:]
+    public internal(set) var name: String = ""
+    public internal(set) var voltage: Int = 0
     public internal(set) var rssi: RSSI = -100
+    public internal(set) var ports: [IOPort: Device?] = [:]
+    public var rgbLight: RGBLight? { ports[.rgbLight] as? RGBLight }
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
     public var system: UInt8 { 0b01000001 }
+    
+    public func resetName(_ name: String? = nil) {
+        if let name, !name.isEmpty {
+            write(Request.hubProperties(.setAdvertisingName(name)))
+        } else {
+            write(Request.hubProperties(.resetAdvertisingName))
+        }
+    }
     
     let peripheral: CBPeripheral
     let advertisementData: AdvertisementData
@@ -34,9 +45,9 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
         case .hubProperties:
             switch Property.Payload(value.offset(3)) {
             case .advertisingName(let name):
-                Logger.debug("\(Property.advertisingName): \(name)")
+                self.name = name
             case .batteryVoltage(let voltage):
-                Logger.debug("\(Property.batteryVoltage): \(voltage)")
+                self.voltage = voltage
             default:
                 break
             }
@@ -58,17 +69,6 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
         case .genericError:
             guard let error: GenericError = GenericError(value.offset(3)) else { break }
             Logger.debug("error: \(error)")
-        case .portInformation:
-            Logger.debug("port information")
-        case .portModeInformation:
-            switch ModeInformation.Payload(value.offset(3)) {
-            case .name(let name):
-                Logger.debug("port mode name: \(name)")
-            default:
-                Logger.debug("port mode information")
-            }
-        case .portValueSingle:
-            Logger.debug("port value (single)")
         default:
             break
         }
