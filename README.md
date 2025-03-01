@@ -42,7 +42,7 @@ Additionally, app entitlements need to enable Bluetooth:
 | --- | --- |
 | ![](docs/entitlements-app-sandbox.png) | ![](docs/entitlements-background-modes.png) |
 
-[Add this package](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) to your Xcode project (or as a dependency in another package); add `PFunc` library to app target(s).
+[Add `p-func` package (this repo)](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) to your Xcode project (or as a dependency in another package), and add `PFunc` library to app target(s). Add `@Observable PFunc` object to your SwiftUI app environment:
 
 ```swift
 import SwiftUI
@@ -62,6 +62,13 @@ struct App: SwiftUI.App {
 }
 ```
 
+[CONNECTING HUBS]
+
+```swift
+import SwiftUI
+import PFunc
+
+```
 All hub property updates are published:
 
 * Advertising name (14-character ASCII string)
@@ -72,10 +79,36 @@ All hub property updates are published:
 
 Both advertising name and RGB light color are settable and resettable. Name changes are persisted on the hub across connections, until changed or reset. RGB light color always starts at hub default on connection. (To remember which hubs were which color last time connected, your app can depend on the Core Bluetooth peripheral `CBUUID` being the same, connection to connection.)
 
+[SET/RESET HUB ADVERTISING NAME]
+
+```swift
+import SwiftUI
+import PFunc
+
+```
+
+[SET/RESET HUB RGB LIGHT]
+
+```swift
+import SwiftUI
+import PFunc
+
+```
+
 Note that all hubs appear to use the same RGB light hardware component with the same, very cold (visibly blue) white, but hub default RGB colors differ between hub systems:
 
 * Train hub (88009) defaults to LWP/LPF2 default `white`
 * Technic™ Hub (88012) defaults to custom blue RGB value
+
+[DRIVE ATTACHMENTS: MOTOR]
+
+```swift
+import SwiftUI
+import PFunc
+
+```
+
+[DRIVE ATTACHMENTS: LIGHT]
 
 ```swift
 import SwiftUI
@@ -87,7 +120,7 @@ import PFunc
 
 There's a good chance you actually want [Pybricks](https://pybricks.com), not this library.
 
-Unfortunately, I want a native Mac/iOS app that can drive Powered Up train hubs _running stock [LPF2](https://brickarchitect.com/powered-up) firmware_. No avoiding a slog through LWP. Fortunately, others already slogged:
+Unfortunately, I also want a native app that can drive Powered Up train hubs _running stock [LPF2](https://brickarchitect.com/powered-up) firmware_. No avoiding a slog through LWP. Fortunately, others already slogged:
 
 * [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
 * [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)
