@@ -32,17 +32,17 @@ Written in [Swift](https://developer.apple.com/documentation/swift) 6 for Apple 
 
 Build with [Xcode](https://developer.apple.com/xcode) 16 or newer.
 
-## Examples
+## Building Instructions
 
 Apps using `PFunc` are using Core Bluetooth. Your app will crash if its `Info.plist` doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
 
-Additionally, app entitlements should enable Bluetooth:
+Additionally, app entitlements need to enable Bluetooth:
 
 | macOS | iOS, visionOS |
 | --- | --- |
 | ![](docs/entitlements-app-sandbox.png) | ![](docs/entitlements-background-modes.png) |
 
-[Adding package dependencies](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app)
+[Add this package](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) to your Xcode project (or as a dependency in another package); add `PFunc` library to app target(s).
 
 ```swift
 import SwiftUI
@@ -62,11 +62,32 @@ struct App: SwiftUI.App {
 }
 ```
 
+All hub property updates are published:
+
+* Advertising name (14-character ASCII string)
+* Battery voltage (0-100%)
+* Bluetooth signal strength (poor/fair/good w/ relative dbm) and connection status (`CBPeripheralState`)
+* Built-in RGB light color (10 named presets or custom RGB 0-255)
+* Ports (attached/detached)
+
+Both advertising name and RGB light color are settable and resettable. Name changes are persisted on the hub across connections, until changed or reset. RGB light color always starts at hub default on connection. (To remember which hubs were which color last time connected, your app can depend on the Core Bluetooth peripheral `CBUUID` being the same, connection to connection.)
+
+Note that all hubs appear to use the same RGB light hardware component with the same, very cold (visibly blue) white, but hub default RGB colors differ between hub systems:
+
+* Train hub (88009) defaults to LWP/LPF2 default `white`
+* Technic™ Hub (88012) defaults to custom blue RGB value
+
+```swift
+import SwiftUI
+import PFunc
+
+```
+
 ## Acknowledgments
 
-There's a good chance you actually want [Pybricks](https://pybricks.com), not this library. A fork of this project is looking for a way to package Pybricks so it's [App Review](https://developer.apple.com/distribute/app-review) legal, because that's what _I'd_ like to be running on my LEGO kit.
+There's a good chance you actually want [Pybricks](https://pybricks.com), not this library.
 
-Unfortunately, even if I figure that out _and_ learn Python, I still want a native Mac/iOS app that can drive Powered Up train hubs _running stock [LPF2](https://brickarchitect.com/powered-up) firmware_. No avoiding a slog through LWP. Fortunately, others already slogged:
+Unfortunately, I want a native Mac/iOS app that can drive Powered Up train hubs _running stock [LPF2](https://brickarchitect.com/powered-up) firmware_. No avoiding a slog through LWP. Fortunately, others already slogged:
 
 * [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
 * [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)

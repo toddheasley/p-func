@@ -2,7 +2,7 @@
 
 import PackageDescription
 
-let package: Package = Package(name: "p-func", platforms: [
+let package: Package = Package(name: "PFunc", platforms: [
         .macOS(.v15),
         .iOS(.v18),
         .visionOS(.v2)
