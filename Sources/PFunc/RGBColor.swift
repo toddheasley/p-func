@@ -6,6 +6,8 @@
 // * Custom RGB value (mode 1) scale is 0-255
 
 public enum RGBColor: Sendable, CustomStringConvertible, Encoding {
+    public typealias RGBA = (red: Double, green: Double, blue: Double, alpha: Double)
+    
     public enum Preset: UInt8, Sendable, CaseIterable, CustomStringConvertible, Identifiable {
         case black = 0x00
         case pink = 0x01
@@ -22,6 +24,23 @@ public enum RGBColor: Sendable, CustomStringConvertible, Encoding {
         
         public static let `default`: Self = .none
         public static let off: Self = .black
+        
+        public var rgba: RGBA {
+            switch self {
+            case .black: (0.0, 0.0, 0.0, 0.0)
+            case .pink: (1.0, 0.3, 0.9, 1.0)
+            case .purple: (0.6, 0.0, 0.9, 1.0)
+            case .blue: (0.0, 0.0, 0.9, 1.0)
+            case .lightBlue: (0.0, 0.7, 0.9, 1.0)
+            case .teal: (0.0, 1.0, 0.8, 1.0)
+            case .green: (0.0, 1.0, 0.3, 1.0)
+            case .yellow: (0.9, 0.8, 0.1, 1.0)
+            case .orange: (1.0, 0.5, 0.2, 1.0)
+            case .red: (1.0, 0.1, 0.2, 1.0)
+            case .white: (1.0, 1.0, 1.0, 1.0)
+            case .none: (0.0, 0.0, 0.0, 0.0)
+            }
+        }
         
         // MARK: CustomStringConvertible
         public var description: String {
@@ -49,6 +68,24 @@ public enum RGBColor: Sendable, CustomStringConvertible, Encoding {
     case custom(_ red: UInt8, _ green: UInt8, _ blue: UInt8)
     
     public static let `default`: Self = .preset(.none)
+    
+    public static let pink: Self = .preset(.pink)
+    public static let purple: Self = .preset(.purple)
+    public static let blue: Self = .preset(.blue)
+    public static let lightBlue: Self = .preset(.lightBlue)
+    public static let teal: Self = .preset(.teal)
+    public static let green: Self = .preset(.green)
+    public static let yellow: Self = .preset(.yellow)
+    public static let orange: Self = .preset(.orange)
+    public static let red: Self = .preset(.red)
+    public static let white: Self = .preset(.white)
+    
+    public var rgba: RGBA {
+        switch self {
+        case .preset(let preset): preset.rgba
+        case .custom(let red, let green, let blue): (Double(red) / 255.0, Double(green) / 255.0, Double(blue) / 255.0, 1.0)
+        }
+    }
     
     public var mode: UInt8 {
         switch self {

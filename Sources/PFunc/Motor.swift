@@ -4,7 +4,7 @@ import Foundation
 // Powered Up Simple Medium Linear Motor (45303)
 // https://www.lego.com/product/simple-medium-linear-motor-45303
 //
-// WeDo basic motor
+// WeDo 2.0 basic motor
 // * Single "LPF2-MMOTOR" mode ~ "power" mode on multi-mode motors
 // * Code ramp, no tacho
 

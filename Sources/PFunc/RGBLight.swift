@@ -1,5 +1,7 @@
 public class RGBLight: Device {
-    public var color: RGBColor = .default {
+    public typealias Color = RGBColor
+    
+    public var color: Color = .default {
         didSet {
             guard let port else { return }
             delegate?.write(Request.portInputFormatSetup(.single(port, mode: color.mode, delta: 1, notify: true)))
