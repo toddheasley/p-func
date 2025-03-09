@@ -75,7 +75,7 @@ All hub property updates are published:
 * Battery voltage (0-100%)
 * Bluetooth signal strength (poor/fair/good w/ relative dbm) and connection status (`CBPeripheralState`)
 * Built-in RGB light color (10 named presets or custom RGB 0-255)
-* Ports (attached/detached)
+* Ports and attached devices (automatically detect/init known `Device` types)
 
 Both advertising name and RGB light color are settable and resettable. Name changes are persisted on the hub across connections, until changed or reset. RGB light color always starts at hub default on connection. (To remember which hubs were which color last time connected, your app can depend on the Core Bluetooth peripheral `CBUUID` being the same, connection to connection.)
 
