@@ -5,8 +5,12 @@ import CoreBluetooth
     public typealias State = CBManagerState
     
     public private(set) var state: State = .unknown
-    public private(set) var hubs: [Hub] = []
     public private(set) var isScanning: Bool = false
+    public private(set) var hubs: [Hub] = []
+    
+    public func hub(_ identifier: UUID?) -> Hub? {
+        hubs.filter { identifier == $0.peripheral.identifier }.first
+    }
     
     public func connect(_ timeout: TimeInterval = 15.0) {
         switch state {
@@ -77,10 +81,6 @@ import CoreBluetooth
             }
     }
     
-    private func hub(_ peripheral: CBPeripheral) -> Hub? {
-        hubs.filter { peripheral == $0.peripheral }.first
-    }
-    
     // MARK: CBCentralManagerDelegate
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi: NSNumber) {
         guard !(hubs.map { $0.identifier }.contains(peripheral.identifier)),
@@ -119,16 +119,16 @@ import CoreBluetooth
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: (any Error)?) {
-        hub(peripheral)?.write(Request.hubProperties(.notifyAdvertisingName(true)))
-        hub(peripheral)?.write(Request.hubProperties(.notifyBatteryVoltage(true)))
+        hub(peripheral.identifier)?.write(Request.hubProperties(.notifyAdvertisingName(true)))
+        hub(peripheral.identifier)?.write(Request.hubProperties(.notifyBatteryVoltage(true)))
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: (any Error)?) {
-        hub(peripheral)?.handle(value: characteristic.value)
+        hub(peripheral.identifier)?.handle(value: characteristic.value)
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didReadRSSI rssi: NSNumber, error: (any Error)?) {
-        hub(peripheral)?.rssi = RSSI(rssi)
+        hub(peripheral.identifier)?.rssi = RSSI(rssi)
     }
 }
 

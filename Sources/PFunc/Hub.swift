@@ -7,7 +7,7 @@ import OSLog
 // AKA "City hub," "2-port hub," "train hub"
 // * Doubles as base class for `TechnicHub`
 
-public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable {
+@Observable public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable {
     public static func hub(peripheral: CBPeripheral, advertisementData: AdvertisementData) -> Hub? {
         [ // Known hubs
             TechnicHub.self,
@@ -21,7 +21,11 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
     public internal(set) var voltage: Int = 0
     public internal(set) var rssi: RSSI = -100
     public internal(set) var ports: [IOPort: Device?] = [:]
-    public var rgbLight: RGBLight? { ports[.rgbLight] as? RGBLight }
+    public var rgbLightColor: RGBColor {
+        set { (ports[.rgbLight] as? RGBLight)?.color = newValue }
+        get { (ports[.rgbLight] as? RGBLight)?.color ?? defaultRGBLightColor }
+    }
+    public var defaultRGBLightColor: RGBColor { .white }
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
     public var system: UInt8 { 0b01000001 }
@@ -59,6 +63,9 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
             case .attached(let port, let device):
                 device?.delegate = self
                 ports[port] = device
+                if let device: RGBLight = device as? RGBLight {
+                    device.color = defaultRGBLightColor
+                }
                 Logger.debug("attached \(port): \(device?.description ?? "nil")")
             case .detached(let port):
                 ports[port] = nil
@@ -72,6 +79,7 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
         default:
             break
         }
+        publish() // Manually re-publish reference properties
     }
     
     public func write(_ value: [UInt8]?) {
@@ -92,6 +100,10 @@ public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, 
         self.peripheral = peripheral
         self.advertisementData = advertisementData
         guard advertisementData.manufacturerData?[3] == system else { return nil } // Only connect to supported models
+    }
+    
+    private func publish() { // Manually publish reference properties
+        ports = nil ?? ports
     }
     
     // MARK: Device.Delegate
