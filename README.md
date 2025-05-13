@@ -4,7 +4,7 @@ __Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swi
 
 `PFunc` talks to [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs over Bluetooth Low Energy (BLE). [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) does the heavy lifting, managing connections and writing instructions to the hubs.
 
-`PFunc` implements _just_ enough of the [LEGO® Wireless Protocol](https://lego.github.io/lego-ble-wireless-protocol-docs) to replace the [88010 Remote Control](https://www.lego.com/product/remote-control-88010) and drive the current generation of Powered Up attachments from the 2- and 4-port consumer hubs.
+`PFunc` implements _just_ enough of the [LEGO® Wireless Protocol](https://lego.github.io/lego-ble-wireless-protocol-docs) to replace the [88010 Remote Control](https://www.lego.com/product/remote-control-88010) and drive the current generation of Powered Up  attachments from the 2- and 4-port consumer hubs.
 
 ### Supported Hubs
 
@@ -79,7 +79,7 @@ All hub property updates are published:
 * Built-in RGB light color (10 named presets or custom RGB 0-255)
 * Ports and attached devices (automatically detect/init known `Device` types)
 
-### Drive Attached Devices
+### Control Attached Devices
 
 Detect when a device is attached to a port and operate functions:
 
@@ -126,3 +126,11 @@ pFunc.hub(id)?.rgbLightColor = .red
 ```
 
 Name changes are persisted on the hub across connections, until changed or reset. RGB light color always starts at hub default on connection. (To remember which hubs were which color last time connected, your app can depend on the Core Bluetooth peripheral `CBUUID` being the same across connections.)
+
+## Thanks
+
+I had a little help from the Internet:
+
+* [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
+* [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)
+* [SmartBotKit LWP](https://github.com/smartbotkit/lwp)
