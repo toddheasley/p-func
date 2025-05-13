@@ -4,8 +4,8 @@ import Foundation
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#io-type-id
 //
 // Base class for hub-attached devices
-// * Subclass represents unique I/O type; implements functions specific to motor or sensor
-// * Doubles as "unknown" (unsupported) device for port attachments
+// * Subcalss to implement a specific motor or sensor
+// * Use concretely to represent a non-functional "unknown" device
 
 public class Device: Decoding, CustomStringConvertible, Identifiable {
     public static func device(_ value: [UInt8]?) -> Device? {

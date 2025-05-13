@@ -24,15 +24,15 @@ __Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swi
 
 ### Supported Platforms
 
-Written in [Swift](https://developer.apple.com/documentation/swift) 6 for Apple stuff:
+Written in [Swift](https://developer.apple.com/documentation/swift) 6.1 for Apple stuff:
 
 * [macOS](https://developer.apple.com/macos) 15 Sequoia
 * [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) 18
 * [visionOS](https://developer.apple.com/visionos) 2
 
-Build with [Xcode](https://developer.apple.com/xcode) 16 or newer.
+Build with [Xcode](https://developer.apple.com/xcode) 16.3 or newer.
 
-## Building Instructions
+## Instructions
 
 Apps using `PFunc` are using Core Bluetooth. Your app will crash if its `Info.plist` doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
 
@@ -42,7 +42,11 @@ Additionally, app entitlements need to enable Bluetooth:
 | --- | --- |
 | ![](docs/entitlements-app-sandbox.png) | ![](docs/entitlements-background-modes.png) |
 
-[Add `p-func` package (this repo)](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) to your Xcode project (or as a dependency in another package), and add `PFunc` library to app target(s). Add `@Observable PFunc` object to your SwiftUI app environment:
+[Add `p-func` package](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) to your Xcode project, then add `PFunc` library to the app target(s).
+
+### Connect Hubs
+
+Add `@Observable PFunc` object to the SwiftUI app environment; connect nearby hubs when Bluetooth is enabled:
 
 ```swift
 import SwiftUI
@@ -57,18 +61,16 @@ struct App: SwiftUI.App {
         WindowGroup {
             ContentView()
                 .environment(pFunc)
+                .onChange(of: pFunc.state) {
+                    if pFunc.state == .poweredOn {
+                        pFunc.connect()
+                    }
+                }
         }
     }
 }
 ```
 
-[CONNECTING HUBS]
-
-```swift
-import SwiftUI
-import PFunc
-
-```
 All hub property updates are published:
 
 * Advertising name (14-character ASCII string)
@@ -77,51 +79,50 @@ All hub property updates are published:
 * Built-in RGB light color (10 named presets or custom RGB 0-255)
 * Ports and attached devices (automatically detect/init known `Device` types)
 
-Both advertising name and RGB light color are settable and resettable. Name changes are persisted on the hub across connections, until changed or reset. RGB light color always starts at hub default on connection. (To remember which hubs were which color last time connected, your app can depend on the Core Bluetooth peripheral `CBUUID` being the same, connection to connection.)
+### Drive Attached Devices
 
-[SET/RESET HUB ADVERTISING NAME]
-
-```swift
-import SwiftUI
-import PFunc
-
-```
-
-[SET/RESET HUB RGB LIGHT]
+Detect when a device is attached to a port and operate functions:
 
 ```swift
-import SwiftUI
 import PFunc
+import SwiftUI
 
+struct RemoteControl: View {
+    init(hub id: UUID) {
+        self.id = id
+    }
+    
+    @Environment(PFunc.self) private var pFunc: PFunc
+    private let id: UUID
+    
+    private var device: Device? { pFunc.hub(id)?.device(at: .external(.a)) }
+    
+    // MARK: View
+    var body: some View {
+        Button(action: {
+            if let light: LEDLight = device as? LEDLight {
+                light.intensity = light.intensity == .off ? .percent(50) : .off
+            } else if let motor: Motor = device as? Motor {
+                motor.ramp(to: motor.power == .float ? .forward(50) : .float)
+            }
+        }) {
+            Text("Toggle Device Function")
+        }
+        .disabled(device == nil)
+    }
+}
 ```
 
-Note that all hubs appear to use the same RGB light hardware component with the same, very cold (visibly blue) white, but hub default RGB colors differ between hub systems:
+### Change Hub Name and RGB Light
 
-* Train hub (88009) defaults to LWP/LPF2 default `white`
-* Technic™ Hub (88012) defaults to custom blue RGB value
-
-[DRIVE ATTACHMENTS: MOTOR]
+Both advertising name and RGB light color are settable and resettable:
 
 ```swift
-import SwiftUI
-import PFunc
-
+pFunc.hub(id)?.resetName("New Hub Name")
 ```
-
-[DRIVE ATTACHMENTS: LIGHT]
 
 ```swift
-import SwiftUI
-import PFunc
-
+pFunc.hub(id)?.rgbLightColor = .red
 ```
 
-## Acknowledgments
-
-There's a good chance you actually want [Pybricks](https://pybricks.com), not this library.
-
-Unfortunately, I also want a native app that can drive Powered Up train hubs _running stock [LPF2](https://brickarchitect.com/powered-up) firmware_. No avoiding a slog through LWP. Fortunately, others already slogged:
-
-* [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
-* [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)
-* [SmartBotKit LWP](https://github.com/smartbotkit/lwp)
+Name changes are persisted on the hub across connections, until changed or reset. RGB light color always starts at hub default on connection. (To remember which hubs were which color last time connected, your app can depend on the Core Bluetooth peripheral `CBUUID` being the same across connections.)

@@ -6,8 +6,8 @@ import Foundation
 // Set hub properties, request and subscribe to value changes
 // * Advertising name up to 14 ASCII characters
 // * Advertising name changes persist on hub; hub reset reverts to factory value
-// * Battery voltage value scale is 0-100 percent
-// * RSSI value provided by `CBPeripheralDelegate`, not implemented here
+// * Battery voltage value scale is 0...100 percent
+// * RSSI value provided by `CBPeripheralDelegate`; not implemented here
 
 public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
     public enum Operation: UInt8, CaseIterable, Identifiable {

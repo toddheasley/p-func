@@ -2,11 +2,11 @@
 // Hub attached I/O
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-attached-i-o
 //
-// Hubs have different combinations of built-in and pluggable ports; devices attach to ports
-// * All hubs have same internal RGB status light and battery voltage sensors (at same port addresses)
-// * `Hub` includes 2 pluggable, external ports: A, B
-// * `TechnicHub` includes 4 pluggable, external ports: A, B, C, D
+// Hubs have different combinations of built-in and pluggable ports
+// * All hubs have same internal RGB status light and battery voltage sensors
 // * Port addresses are standard accross hubs
+// * `Hub` includes 2 pluggable, external ports: A, B
+// * `TechnicHub` includes 4 external ports: A, B, C, D
 
 public enum IOPort: Hashable, RawRepresentable, Decoding, CustomStringConvertible, Identifiable {
     public enum Name: UInt8, CaseIterable, CustomStringConvertible, Identifiable {

@@ -3,9 +3,9 @@ import CoreBluetooth
 // Advertising
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#advertising
 //
-// Standard dictionary "advertised" by all Bluetooth peripherals
-// * Hub type ("system" in LEGO parlance; e.g., 4-port `TechnicHub` or 2-port "City" `Hub`) derived from manufacturer data
-// * `PFunc` expects LEGO devices to advertise single, LEGO-specific GATT service
+// Standard dictionary advertised by Bluetooth peripherals
+// * Hub type (e.g., 4-port `TechnicHub` or 2-port "City" `Hub`) derived from manufacturer data
+// * LEGO devices advertise a single, LEGO-specific GATT service
 
 public struct AdvertisementData {
     public let serviceUUIDs: [CBUUID]

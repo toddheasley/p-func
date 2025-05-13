@@ -3,10 +3,10 @@ import Foundation
 // Received signal strength indicator (hub property)
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-property-payload
 //
-// Bluetooth standard RF level
-// * Value scale is -127-0
-// * Higher number ("less negative" in LEGO parlance) indicates better signal quality
+// Bluetooth RF level
 // * Approximated dBm, measured at receiving device
+// * Less negative number indicates better signal quality
+// * Value scale is -127...0
 
 public struct RSSI: CustomStringConvertible, ExpressibleByIntegerLiteral, RawRepresentable {
     public enum Quality: String, CaseIterable, CustomStringConvertible {

@@ -5,8 +5,7 @@ import Foundation
 // https://www.lego.com/product/hub-88011
 //
 // City train bogey motor
-// * Single "LPF2-TRAIN" mode ~ "power" mode on multi-mode motors
-// * Code ramp, no tacho
+// * Single "LPF2-TRAIN" mode
 
 public class TrainMotor: Motor {
     

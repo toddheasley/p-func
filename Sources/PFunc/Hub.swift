@@ -5,7 +5,7 @@ import OSLog
 // https://www.lego.com/product/hub-88009
 //
 // AKA "City hub," "2-port hub," "train hub"
-// * Doubles as base class for `TechnicHub`
+// * Base class for `TechnicHub`
 
 @Observable public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable {
     public static func hub(peripheral: CBPeripheral, advertisementData: AdvertisementData) -> Hub? {
@@ -29,6 +29,10 @@ import OSLog
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
     public var system: UInt8 { 0b01000001 }
+    
+    public func device(at port: IOPort) -> Device? {
+        ports[port] != nil ? ports[port]! : nil
+    }
     
     public func resetName(_ name: String? = nil) {
         if let name, !name.isEmpty {

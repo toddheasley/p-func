@@ -2,10 +2,9 @@
 // Hub attached I/O
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-attached-i-o
 //
-// Hubs have different combinations of built-in and pluggable ports; devices attach to ports
-// * External ports emit attached and detached events as needed
+// Hubs have different combinations of built-in and pluggable ports
+// * External ports emit events when a `Device` is plugged or unplugged
 // * All ports emit attached/detached events on hub connection
-// * Events tell hubs (1) which ports it has and (2) which devices are attached to which ports
 
 public enum AttachedIO: Decoding {
     public enum Event: UInt8, CaseIterable, Decoding, Identifiable {

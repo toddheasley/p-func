@@ -7,7 +7,10 @@ import CoreBluetooth
     public private(set) var state: State = .unknown
     public private(set) var isScanning: Bool = false
     public private(set) var hubs: [Hub] = []
+    public var hubID: UUID?
     
+    public var hub: Hub? { hub(hubID) }
+        
     public func hub(_ identifier: UUID?) -> Hub? {
         hubs.filter { identifier == $0.peripheral.identifier }.first
     }

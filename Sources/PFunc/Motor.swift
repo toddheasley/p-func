@@ -5,8 +5,7 @@ import Foundation
 // https://www.lego.com/product/simple-medium-linear-motor-45303
 //
 // WeDo 2.0 basic motor
-// * Single "LPF2-MMOTOR" mode ~ "power" mode on multi-mode motors
-// * Code ramp, no tacho
+// * Single "LPF2-MMOTOR" mode
 
 public class Motor: Device, Product {
     public enum Ramp: Double {
