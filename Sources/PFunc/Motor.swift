@@ -8,26 +8,6 @@ import Foundation
 // * Single "LPF2-MMOTOR" mode
 
 public class Motor: Device, Product {
-    public enum Ramp: Double {
-        case gradual = 0.66
-        case `default` = 0.33
-    }
-    
-    public func ramp(_ ramp: Ramp = .default, to power: Power) {
-        timer?.cancel() // Interrupt in-progress ramp
-        steps = self.power.steps(to: power) // Ramp from current power
-        timer = Timer.publish(every: ramp.rawValue, on: .main, in: .common)
-            .autoconnect()
-            .sink { _ in
-                guard let rawValue: Int = self.steps.first, let power: Power = Power(rawValue: rawValue) else {
-                    self.timer?.cancel()
-                    return
-                }
-                self.power = power
-                self.steps = Array(self.steps.dropFirst())
-            }
-    }
-    
     public var power: Power = .float {
         didSet {
             guard let port else { return }
