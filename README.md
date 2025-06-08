@@ -103,7 +103,7 @@ struct RemoteControl: View {
             if let light: LEDLight = device as? LEDLight {
                 light.intensity = light.intensity == .off ? .percent(50) : .off
             } else if let motor: Motor = device as? Motor {
-                motor.ramp(to: motor.power == .float ? .forward(50) : .float)
+                motor.power = motor.power == .float ? .forward(50) : .float)
             }
         }) {
             Text("Toggle Device Function")
