@@ -24,13 +24,13 @@ __Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swi
 
 ### Supported Platforms
 
-Written in [Swift](https://developer.apple.com/documentation/swift) 6.1 for Apple stuff:
+Written in [Swift](https://developer.apple.com/documentation/swift) 6.2 for Apple stuff:
 
 * [macOS](https://developer.apple.com/macos) 15 Sequoia
 * [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) 18
 * [visionOS](https://developer.apple.com/visionos) 2
 
-Build with [Xcode](https://developer.apple.com/xcode) 16.3 or newer.
+Build with [Xcode](https://developer.apple.com/xcode) 26 or newer.
 
 ## Instructions
 

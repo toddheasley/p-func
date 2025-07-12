@@ -1,4 +1,4 @@
-public enum Power: RawRepresentable, Decoding, Encoding, Identifiable {
+public enum Power: RawRepresentable, Decoding, Encoding, Equatable, Identifiable {
     case forward(Int)
     case reverse(Int)
     case float

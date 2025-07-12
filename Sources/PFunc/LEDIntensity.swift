@@ -1,4 +1,4 @@
-public enum LEDIntensity: RawRepresentable, Decoding, Encoding, Identifiable {
+public enum LEDIntensity: RawRepresentable, Decoding, Encoding, Equatable, Identifiable {
     case percent(Int), off
     
     public static func stepped(_ step: Int, of steps: Int = 10) -> Self {
