@@ -7,7 +7,7 @@ import OSLog
 // AKA "City hub," "2-port hub," "train hub"
 // * Base class for `TechnicHub`
 
-@Observable public class Hub: Device.Delegate, Product, CustomStringConvertible, Equatable, Identifiable {
+@Observable public class Hub: CustomStringConvertible, Device.Delegate, Equatable, Identifiable, Product {
     public static func hub(peripheral: CBPeripheral, advertisementData: AdvertisementData) -> Hub? {
         [ // Known hubs
             TechnicHub.self,
@@ -110,16 +110,13 @@ import OSLog
         ports = nil ?? ports
     }
     
+    // MARK: CustomStringConvertible
+    public var description: String { "Hub (88009)" }
+    
     // MARK: Device.Delegate
     public func write(_ request: Request) {
         write(request.value())
     }
-    
-    // MARK: CustomStringConvertible
-    public var description: String { "Hub (88009)" }
-    
-    // MARK: Product
-    public var path: String { "hub-88009" }
     
     // MARK: Equatable {
     public static func ==(lhs: Hub, rhs: Hub) -> Bool {
@@ -128,6 +125,9 @@ import OSLog
     
     // MARK: Identifiable
     public var id: UUID { identifier }
+    
+    // MARK: Product
+    public var path: String { "hub-88009" }
 }
 
 extension Hub.State: @retroactive CustomStringConvertible {

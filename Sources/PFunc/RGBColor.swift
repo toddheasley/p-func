@@ -5,10 +5,10 @@
 // Set `RGBLight` to one of a number of preset colors (mode 0) or custom RGB (mode 1)
 // * Custom RGB value (mode 1) scale is 0...255
 
-public enum RGBColor: Sendable, CustomStringConvertible, Encoding {
+public enum RGBColor: CustomStringConvertible, Encoding, Sendable {
     public typealias RGBA = (red: Double, green: Double, blue: Double, alpha: Double)
     
-    public enum Preset: UInt8, Sendable, CaseIterable, CustomStringConvertible, Identifiable {
+    public enum Preset: UInt8, CaseIterable, CustomStringConvertible, Identifiable, Sendable {
         case black = 0x00
         case pink = 0x01
         case purple = 0x02

@@ -15,7 +15,7 @@ public typealias Encoding = Request.Encoding
 
 extension Request: Encoding {
     
-    // Encoding
+    // MARK: Encoding
     public func value() -> [UInt8] {
         switch self {
         case .hubProperties(let request): request.value(header: 0x01)

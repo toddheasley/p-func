@@ -2,7 +2,7 @@
 // Generic error
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#generic-error-messages
 
-public enum GenericError: UInt8, Error, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
+public enum GenericError: UInt8, CaseIterable, CustomStringConvertible, Decoding, Error, Identifiable {
     case nack = 0x02
     case bufferOverflow = 0x03
     case timeout = 0x04
@@ -10,11 +10,6 @@ public enum GenericError: UInt8, Error, CaseIterable, Decoding, CustomStringConv
     case invalidUse = 0x06
     case overcurrent = 0x07
     case internalError = 0x08
-    
-    // MARK: Decoding
-    public init?(_ value: [UInt8]?) {
-        self.init(rawValue: value?[1] ?? 0x00)
-    }
     
     // MARK: CustomStringConvertible
     public var description: String {
@@ -27,6 +22,11 @@ public enum GenericError: UInt8, Error, CaseIterable, Decoding, CustomStringConv
         case .overcurrent: "overcurrent"
         case .internalError: "internal error"
         }
+    }
+    
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        self.init(rawValue: value?[1] ?? 0x00)
     }
     
     // MARK: Identifiable

@@ -9,10 +9,8 @@ import Foundation
 
 public class TrainMotor: Motor {
     
-    // MARK: Device
+    // MARK: Motor
     override public var description: String { "Train Motor (88011)" }
     override public var id: UInt16 { 0x0002 }
-    
-    // MARK: Product
     override public var path: String { "train-motor-88011" }
 }

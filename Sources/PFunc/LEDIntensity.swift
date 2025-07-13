@@ -1,20 +1,8 @@
-public enum LEDIntensity: RawRepresentable, Decoding, Encoding, Equatable, Identifiable {
+public enum LEDIntensity: Decoding, Encoding, Equatable, Identifiable, RawRepresentable {
     case percent(Int), off
     
     public static func stepped(_ step: Int, of steps: Int = 10) -> Self {
         Self(rawValue: step.percent(of: steps))!
-    }
-    
-    // MARK: RawRepresentable
-    public init?(rawValue: Int) {
-        self = rawValue > 0 ? .percent(min(max(abs(rawValue), 1), 100)) : .off
-    }
-    
-    public var rawValue: Int {
-        switch self {
-        case .percent(let percent): percent
-        case .off: 0
-        }
     }
     
     // MARK: Decoding
@@ -30,6 +18,18 @@ public enum LEDIntensity: RawRepresentable, Decoding, Encoding, Equatable, Ident
     
     // MARK: Identifiable
     public var id: UInt8 { UInt8(rawValue) }
+    
+    // MARK: RawRepresentable
+    public init?(rawValue: Int) {
+        self = rawValue > 0 ? .percent(min(max(abs(rawValue), 1), 100)) : .off
+    }
+    
+    public var rawValue: Int {
+        switch self {
+        case .percent(let percent): percent
+        case .off: 0
+        }
+    }
 }
 
 extension Int {

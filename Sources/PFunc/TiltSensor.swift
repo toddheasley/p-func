@@ -7,7 +7,7 @@ public class TiltSensor: Device {
     }
     
     // https://lego.github.io/lego-ble-wireless-protocol-docs/#enc-wdm
-    public enum Orientation: UInt8, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
+    public enum Orientation: UInt8, CaseIterable, CustomStringConvertible, Decoding, Identifiable {
         case bottom = 0x00
         case front = 0x01
         case back = 0x02
@@ -15,11 +15,6 @@ public class TiltSensor: Device {
         case right = 0x04
         case top = 0x05
         case actual = 0x06
-        
-        // MARK: Decoding
-        public init?(_ value: [UInt8]?) {
-            self.init(rawValue: value?.first ?? 0x07)
-        }
         
         // MARK: CustomStringConvertible
         public var description: String {
@@ -32,6 +27,11 @@ public class TiltSensor: Device {
             case .top: "top"
             case .actual: "actual"
             }
+        }
+        
+        // MARK: Decoding
+        public init?(_ value: [UInt8]?) {
+            self.init(rawValue: value?.first ?? 0x07)
         }
         
         // MARK: Identifiable

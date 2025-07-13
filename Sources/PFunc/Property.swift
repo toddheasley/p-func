@@ -9,7 +9,7 @@ import Foundation
 // * Battery voltage value scale is 0...100 percent
 // * RSSI value provided by `CBPeripheralDelegate`; not implemented here
 
-public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Identifiable {
+public enum Property: UInt8, CaseIterable, CustomStringConvertible, Decoding, Identifiable {
     public enum Operation: UInt8, CaseIterable, Identifiable {
         case set = 0x01
         case enableUpdates = 0x02
@@ -67,17 +67,17 @@ public enum Property: UInt8, CaseIterable, Decoding, CustomStringConvertible, Id
     case advertisingName = 0x01
     case batteryVoltage = 0x06
     
-    // MARK: Decoding
-    public init?(_ value: [UInt8]?) {
-        self.init(rawValue: value?[0] ?? 0x00)
-    }
-    
     // MARK: CustomStringConvertible
     public var description: String {
         switch self {
         case .advertisingName: "advertising name"
         case .batteryVoltage: "battery voltage (percent)"
         }
+    }
+    
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        self.init(rawValue: value?[0] ?? 0x00)
     }
     
     // MARK: Identifiable

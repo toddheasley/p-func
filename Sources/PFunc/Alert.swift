@@ -2,7 +2,7 @@
 // Hub alerts
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#hub-alerts
 
-public enum Alert: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
+public enum Alert: UInt8, CaseIterable, CustomStringConvertible, Decoding, Identifiable {
     public enum Operation: UInt8, CaseIterable, Identifiable {
         case enableUpdates = 0x01
         case disableUpdates = 0x02
@@ -45,15 +45,6 @@ public enum Alert: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
     case lowSignalStrength = 0x03
     case overPowerCondition = 0x04
     
-    // MARK: Decoding
-    public init?(_ value: [UInt8]?) {
-        guard value?[1] == Operation.update.id,
-              Payload(value?.offset(2)) == .alert else {
-            return nil
-        }
-        self.init(rawValue: value?[0] ?? 0x00)
-    }
-    
     // MARK: CustomStringConvertible
     public var description: String {
         switch self {
@@ -62,6 +53,15 @@ public enum Alert: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
         case .lowSignalStrength: "low signal strength"
         case .overPowerCondition: "over power condition"
         }
+    }
+    
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        guard value?[1] == Operation.update.id,
+              Payload(value?.offset(2)) == .alert else {
+            return nil
+        }
+        self.init(rawValue: value?[0] ?? 0x00)
     }
     
     // MARK: Identifiable

@@ -8,7 +8,7 @@
 // * `Hub` includes 2 pluggable, external ports: A, B
 // * `TechnicHub` includes 4 external ports: A, B, C, D
 
-public enum IOPort: Hashable, RawRepresentable, Decoding, CustomStringConvertible, Identifiable {
+public enum IOPort: CustomStringConvertible, Decoding, Hashable, Identifiable, RawRepresentable {
     public enum Name: UInt8, CaseIterable, CustomStringConvertible, Identifiable {
         case a = 0x00
         case b = 0x01
@@ -33,6 +33,26 @@ public enum IOPort: Hashable, RawRepresentable, Decoding, CustomStringConvertibl
     case rgbLight, voltage
     case tiltSensor
     case unknown(UInt8)
+    
+    // MARK: CustomStringConvertible
+    public var description: String {
+        switch self {
+        case .external(let name): "\(name) (external)"
+        case .rgbLight: "RGB light"
+        case .voltage: "voltage"
+        case .tiltSensor: "tilt sensor"
+        case .unknown(let value): "\(value.hexDescription) (unknown)"
+        }
+    }
+    
+    // MARK: Decoding
+    public init?(_ value: [UInt8]?) {
+        guard let rawValue: UInt8 = value?.first else { return nil }
+        self.init(rawValue: rawValue)
+    }
+    
+    // MARK: Identifiable
+    public var id: UInt8 { rawValue }
     
     // MARK: RawRepresentable
     public init?(rawValue: UInt8) {
@@ -66,24 +86,4 @@ public enum IOPort: Hashable, RawRepresentable, Decoding, CustomStringConvertibl
             
         }
     }
-    
-    // MARK: Decoding
-    public init?(_ value: [UInt8]?) {
-        guard let rawValue: UInt8 = value?.first else { return nil }
-        self.init(rawValue: rawValue)
-    }
-    
-    // MARK: CustomStringConvertible
-    public var description: String {
-        switch self {
-        case .external(let name): "\(name) (external)"
-        case .rgbLight: "RGB light"
-        case .voltage: "voltage"
-        case .tiltSensor: "tilt sensor"
-        case .unknown(let value): "\(value.hexDescription) (unknown)"
-        }
-    }
-    
-    // MARK: Identifiable
-    public var id: UInt8 { rawValue }
 }
