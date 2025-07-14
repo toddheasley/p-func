@@ -1,10 +1,6 @@
 public enum LEDIntensity: Decoding, Encoding, Equatable, Identifiable, RawRepresentable {
     case percent(Int), off
     
-    public static func stepped(_ step: Int, of steps: Int = 10) -> Self {
-        Self(rawValue: step.percent(of: steps))!
-    }
-    
     // MARK: Decoding
     public init?(_ value: [UInt8]?) {
         guard let value: UInt8 = value?.first else { return nil }
