@@ -3,7 +3,7 @@ public enum Power: Decoding, Encoding, Equatable, Identifiable, RawRepresentable
     case reverse(Int)
     case float
     
-    func reversed(_ isReversed: Bool = true) -> Self {
+    public func reversed(_ isReversed: Bool = true) -> Self {
         switch self {
         case .forward(let percent): isReversed ? .reverse(percent) : self
         case .reverse(let percent): isReversed ? .forward(percent) : self
