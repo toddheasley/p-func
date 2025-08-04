@@ -5,7 +5,7 @@
 // Set `RGBLight` to one of a number of preset colors (mode 0) or custom RGB (mode 1)
 // * Custom RGB value (mode 1) scale is 0...255
 
-public enum RGBColor: CustomStringConvertible, Encoding, Sendable {
+public enum RGBColor: CustomStringConvertible, Encoding, Equatable, Identifiable, Sendable {
     public typealias RGBA = (red: Double, green: Double, blue: Double, alpha: Double)
     
     public enum Preset: UInt8, CaseIterable, CustomStringConvertible, Identifiable, Sendable {
@@ -109,4 +109,7 @@ public enum RGBColor: CustomStringConvertible, Encoding, Sendable {
         case .preset(let preset): [mode, preset.id]
         }
     }
+    
+    // MARK: Identifiable
+    public var id: String { description }
 }
