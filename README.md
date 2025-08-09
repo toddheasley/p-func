@@ -119,6 +119,7 @@ Both advertising name and RGB light color are settable and resettable:
 
 ```swift
 pFunc.hub(id)?.resetName("New Hub Name")
+pFunc.hub(id)?.resetName() // Reset name back to firmware default
 ```
 
 ```swift
