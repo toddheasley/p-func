@@ -1,6 +1,6 @@
 # `PFunc`
 
-__Control LEGO® Powered Up motors, lights and sensors from an `@Observable` Swift interface__
+__Control LEGO® Powered Up motors and lights from an `@Observable` Swift interface__
 
 `PFunc` talks to [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs over Bluetooth Low Energy (BLE). [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) does the heavy lifting, managing connections and writing instructions to the hubs.
 
