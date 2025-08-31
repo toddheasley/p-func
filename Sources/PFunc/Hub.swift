@@ -21,11 +21,11 @@ import OSLog
     public internal(set) var voltage: Int = 0
     public internal(set) var rssi: RSSI = -100
     public internal(set) var ports: [IOPort: Device?] = [:]
-    public var rgbLightColor: RGBColor {
+    public var rgbLightColor: RGBLight.Color {
         set { (ports[.rgbLight] as? RGBLight)?.color = newValue }
         get { (ports[.rgbLight] as? RGBLight)?.color ?? defaultRGBLightColor }
     }
-    public var defaultRGBLightColor: RGBColor { .white }
+    public var defaultRGBLightColor: RGBLight.Color { .white }
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
     public var system: UInt8 { 0b01000001 }

@@ -23,7 +23,7 @@ public enum OutputCommand {
     }
     
     public enum Request: Encoding {
-        case setRGBColor(_ port: UInt8, flag: Flag = .feedback, color: RGBColor)
+        case setRGBColor(_ port: UInt8, flag: Flag = .feedback, color: RGBLight.Color)
         case setLEDIntensity(_ port: UInt8, flag: Flag = .feedback, intensity: LEDIntensity)
         case startPower(_ port: UInt8, flag: Flag = .feedback, power: Power)
         
