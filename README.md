@@ -136,4 +136,4 @@ I had a little help from the Internet:
 * [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)
 * [SmartBotKit LWP](https://github.com/smartbotkit/lwp)
 
-`PFunc` is not affiliated with the LEGO Group. LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this app.
+`PFunc` is not affiliated with the LEGO Group. LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this software.
