@@ -18,6 +18,7 @@ public enum OutputCommand {
             case .all: "all"
             }
         }
+        
         // MARK: Identifiable
         public var id: UInt8 { rawValue }
     }

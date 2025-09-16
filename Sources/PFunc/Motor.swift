@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 // Powered Up Simple Medium Linear Motor (45303)
@@ -16,7 +15,6 @@ public class Motor: Device, Product {
         }
     }
     
-    private var timer: AnyCancellable?
     private var steps: [Int] = []
     
     // MARK: Device
