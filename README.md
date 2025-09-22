@@ -1,20 +1,20 @@
 # `PFunc`
 
-__Control LEGO® Powered Up motors and lights from an `@Observable` Swift interface__
+__Control Powered Up motors and lights from an `@Observable` Swift interface__
 
 `PFunc` talks to [LEGO® Powered Up](https://www.lego.com/themes/powered-up) hubs over Bluetooth Low Energy (BLE). [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) does the heavy lifting, managing connections and writing instructions to the hubs.
 
-`PFunc` implements _just_ enough of the [LEGO® Wireless Protocol](https://lego.github.io/lego-ble-wireless-protocol-docs) to replace the [88010 Remote Control](https://www.lego.com/product/remote-control-88010) and drive the current generation of Powered Up  attachments from the 2- and 4-port consumer hubs.
+`PFunc` implements _just_ enough of the [LEGO Wireless Protocol](https://lego.github.io/lego-ble-wireless-protocol-docs) to replace the [88010 Remote Control](https://www.lego.com/product/remote-control-88010) and drive the current generation of Powered Up attachments from the 2- and 4-port consumer hubs.
 
 ### Supported Hubs
 
-| [88012&nbsp;Technic™&nbsp;Hub](https://www.lego.com/product/technic-hub-88012) | [88009&nbsp;Hub](https://www.lego.com/product/hub-88009) |
+| [88012&nbsp;Hub](https://www.lego.com/product/technic-hub-88012) | [88009&nbsp;Hub](https://www.lego.com/product/hub-88009) |
 | --- | --- |
 | ![](docs/technic-hub-88012.png) | ![](docs/hub-88009.png) |
 
 ### Supported Attachments
 
-| [88011&nbsp;Train&nbsp;Motor](https://www.lego.com/product/train-motor-88011) | [88013&nbsp;Technic™&nbsp;Large&nbsp;Motor](https://www.lego.com/product/technic-large-motor-88013) |
+| [88011&nbsp;Train&nbsp;Motor](https://www.lego.com/product/train-motor-88011) | [88013&nbsp;Large&nbsp;Motor](https://www.lego.com/product/technic-large-motor-88013) |
 | --- | --- |
 | ![](docs/train-motor-88011.png) | ![](docs/technic-large-motor-88013.png) |
 
