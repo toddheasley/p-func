@@ -83,7 +83,6 @@ public enum IOPort: CustomStringConvertible, Decoding, Hashable, Identifiable, R
         case .voltage: 0x3C
         case .tiltSensor: 0x63
         case .unknown(let value): value
-            
         }
     }
 }

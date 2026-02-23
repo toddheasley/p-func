@@ -4,8 +4,8 @@ import Foundation
 // https://lego.github.io/lego-ble-wireless-protocol-docs/#io-type-id
 //
 // Base class for hub-attached devices
-// * Subcalss to implement a specific motor or sensor
 // * Use concretely to represent a non-functional "unknown" device
+// * Subcalss to implement a specific motor or sensor
 
 public class Device: CustomStringConvertible, Decoding, Equatable, Identifiable {
     public static func device(_ value: [UInt8]?) -> Device? {
@@ -14,9 +14,7 @@ public class Device: CustomStringConvertible, Decoding, Equatable, Identifiable 
             LinearMotor.self,
             Motor.self,
             RGBLight.self,
-            TiltSensor.self,
             TrainMotor.self,
-            VisionSensor.self,
             Voltage.self,
             Self.self // Catch-all "unknown device" base
         ].compactMap { $0.init(value) }.first

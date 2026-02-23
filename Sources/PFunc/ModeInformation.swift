@@ -19,18 +19,6 @@ public enum ModeInformation: UInt8, CaseIterable, CustomStringConvertible, Decod
             case .name:
                 guard let name: String = String(value.offset(3)) else { return nil }
                 self = .name(name)
-            case .raw:
-                return nil
-            case .pct:
-                return nil
-            case .si:
-                return nil
-            case .symbol:
-                return nil
-            case .motorBias:
-                return nil
-            case .valueFormat:
-                return nil
             default:
                 return nil
             }

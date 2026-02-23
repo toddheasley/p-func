@@ -24,19 +24,13 @@ __Control Powered Up motors and lights from an `@Observable` Swift interface__
 
 ### Supported Platforms
 
-Written in [Swift](https://developer.apple.com/documentation/swift) 6.2 for Apple stuff:
-
-* [macOS](https://developer.apple.com/macos) 15 Sequoia
-* [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) 18
-* [visionOS](https://developer.apple.com/visionos) 2
-
-Build with [Xcode](https://developer.apple.com/xcode) 26 or newer.
+Written in [Swift](https://developer.apple.com/documentation/swift) 6.2 for [macOS](https://developer.apple.com/macos) 26 Tahoe, [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) 26 and [visionOS](https://developer.apple.com/visionos) 26. Build with [Xcode](https://developer.apple.com/xcode) 26 or newer.
 
 ## Instructions
 
 Apps using `PFunc` are using Core Bluetooth. Your app will crash if its `Info.plist` doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
 
-Additionally, app entitlements need to enable Bluetooth:
+Enable Bluetooth in app entitlements:
 
 | macOS | iOS, visionOS |
 | --- | --- |
