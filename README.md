@@ -24,7 +24,7 @@ __Control Powered Up motors and lights from an `@Observable` Swift interface__
 
 ### Supported Platforms
 
-Written in [Swift](https://developer.apple.com/documentation/swift) 6.2 for [macOS](https://developer.apple.com/macos) 26 Tahoe, [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) 26 and [visionOS](https://developer.apple.com/visionos) 26. Build with [Xcode](https://developer.apple.com/xcode) 26 or newer.
+Written in [Swift](https://developer.apple.com/documentation/swift) 6.2 for Tahoe/26 versions of [macOS](https://developer.apple.com/macos), [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) and [visionOS.](https://developer.apple.com/visionos) Build with [Xcode](https://developer.apple.com/xcode) 26 or newer.
 
 ## Instructions
 
