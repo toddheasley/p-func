@@ -8,7 +8,7 @@ import Foundation
 // * Less negative number indicates better signal quality
 // * Value scale is -127...0
 
-public struct RSSI: CustomStringConvertible, ExpressibleByIntegerLiteral, RawRepresentable {
+public struct RSSI: CustomStringConvertible, Equatable, ExpressibleByIntegerLiteral, RawRepresentable {
     public enum Quality: String, CaseIterable, CustomStringConvertible {
         case good, fair, poor, none
         

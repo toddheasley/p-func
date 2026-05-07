@@ -120,7 +120,7 @@ import OSLog
     
     // MARK: Equatable {
     public static func ==(lhs: Hub, rhs: Hub) -> Bool {
-        lhs.identifier == rhs.identifier
+        lhs.identifier == rhs.identifier && lhs.name == rhs.name && lhs.rgbLightColor == rhs.rgbLightColor && lhs.ports == rhs.ports
     }
     
     // MARK: Identifiable
