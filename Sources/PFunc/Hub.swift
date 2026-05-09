@@ -8,6 +8,8 @@ import OSLog
 // * Base class for `TechnicHub`
 
 @Observable public class Hub: CustomStringConvertible, Device.Delegate, Equatable, Identifiable, Product {
+    public static var defaultRGBLightColor: RGBLight.Color { .white }
+    
     public static func hub(peripheral: CBPeripheral, advertisementData: AdvertisementData) -> Hub? {
         [ // Known hubs
             TechnicHub.self,
@@ -21,11 +23,11 @@ import OSLog
     public internal(set) var voltage: Int = 0
     public internal(set) var rssi: RSSI = -100
     public internal(set) var ports: [IOPort: Device?] = [:]
-    public var rgbLightColor: RGBLight.Color {
-        set { (ports[.rgbLight] as? RGBLight)?.color = newValue }
-        get { (ports[.rgbLight] as? RGBLight)?.color ?? defaultRGBLightColor }
+    public var rgbLightColor: RGBLight.Color = Hub.defaultRGBLightColor {
+        didSet {
+            (ports[.rgbLight] as? RGBLight)?.color = rgbLightColor
+        }
     }
-    public var defaultRGBLightColor: RGBLight.Color { .white }
     public var identifier: UUID { peripheral.identifier }
     public var state: State { peripheral.state }
     public var system: UInt8 { 0b01000001 }
@@ -68,7 +70,7 @@ import OSLog
                 device?.delegate = self
                 ports[port] = device
                 if let device: RGBLight = device as? RGBLight {
-                    device.color = defaultRGBLightColor
+                    device.color = rgbLightColor
                 }
                 Logger.debug("attached \(port): \(device?.description ?? "nil")")
             case .detached(let port):
