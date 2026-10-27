@@ -135,7 +135,7 @@ import CoreBluetooth
     }
 }
 
-extension PFunc.State: @retroactive CustomStringConvertible {
+extension CBManagerState: @retroactive CustomStringConvertible {
     private var status: String {
         switch self {
         case .poweredOn: "powered on"

@@ -132,7 +132,7 @@ import OSLog
     public var path: String { "hub-88009" }
 }
 
-extension Hub.State: @retroactive CustomStringConvertible {
+extension CBPeripheralState: @retroactive CustomStringConvertible {
     private var status: String {
         switch self {
         case .connected: "connected"

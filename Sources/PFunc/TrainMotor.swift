@@ -1,5 +1,3 @@
-import Combine
-import Foundation
 
 // Powered Up Train Motor (88011)
 // https://www.lego.com/product/hub-88011

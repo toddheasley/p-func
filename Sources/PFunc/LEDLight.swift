@@ -1,3 +1,7 @@
+
+// Powered Up LED Light (88005)
+// https://www.lego.com/product/light-88005
+
 public class LEDLight: Device, Product {
     public typealias Intensity = LEDIntensity
     

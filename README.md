@@ -24,11 +24,11 @@ __Control Powered Up motors and lights from an `@Observable` Swift interface__
 
 ### Supported Platforms
 
-Written in [Swift](https://developer.apple.com/documentation/swift) 6.2 for Tahoe/26 versions of [macOS](https://developer.apple.com/macos), [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) and [visionOS.](https://developer.apple.com/visionos) Build with [Xcode](https://developer.apple.com/xcode) 26 or newer.
+Written in [Swift](https://developer.apple.com/documentation/swift) for [macOS](https://developer.apple.com/macos), [iOS](https://developer.apple.com/ios)/[iPadOS](https://developer.apple.com/ipad) and [visionOS.](https://developer.apple.com/visionos) Build with [Xcode](https://developer.apple.com/xcode) 27 or newer.
 
 ## Instructions
 
-Apps using `PFunc` are using Core Bluetooth. Your app will crash if its `Info.plist` doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
+Apps using `PFunc` are using Core Bluetooth. Your app will crash if the project doesn't include `NSBluetoothAlwaysUsageDescription` [privacy description.](https://developer.apple.com/documentation/uikit/protecting_the_user_s_privacy/requesting_access_to_protected_resources)
 
 Enable Bluetooth in app entitlements:
 
@@ -36,15 +36,13 @@ Enable Bluetooth in app entitlements:
 | --- | --- |
 | ![](docs/entitlements-app-sandbox.png) | ![](docs/entitlements-background-modes.png) |
 
-[Add `p-func` package](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) to your Xcode project, then add `PFunc` library to the app target(s).
-
 ### Connect Hubs
 
 Add `@Observable PFunc` object to the SwiftUI app environment; connect nearby hubs when Bluetooth is enabled:
 
 ```swift
-import SwiftUI
 import PFunc
+import SwiftUI
 
 @main
 struct App: SwiftUI.App {
@@ -124,7 +122,7 @@ Name changes are persisted on the hub across connections, until changed or reset
 
 ## Thanks
 
-I had a little help from the Internet:
+I had a little help from the web:
 
 * [Notes on LEGO wireless BLE protocol](https://virantha.github.io/bricknil/lego_api/lego.html)
 * [Powered UP - Community Docs (the missing device docs ...)](https://github.com/sharpbrick/docs)
